@@ -9,11 +9,12 @@
 <meta name="apple-mobile-web-app-title" content="Câu chuyện">
 <title>Thế giới các câu chuyện</title>
 <!--
-  THẾ GIỚI CÁC CÂU CHUYỆN — trang (index.html) · v2.0.0
+  THẾ GIỚI CÁC CÂU CHUYỆN — trang (index.html) · v2.0.1
   Đặt tệp này và kho-truyen.json cạnh nhau trên kho mã (GitHub → Vercel). Máy chủ: Code.gs (Apps Script).
   Link máy chủ: dán vào TEAM.API_URL bên dưới, hoặc dán trong app ở ☰ › Cài đặt › Máy chủ.
   Hồ sơ thiết kế: claude/the-gioi-cac-cau-chuyen-ho-so-du-an.md
   v1.0.0 (24/11/2026): bản đầu (Đ1–Đ9, ST1–ST39).
+  v2.0.1 (25/11/2026): thêm ô ẩn "📘 Xem 7 dạng câu hỏi" ở bước Đặt câu hỏi và trong tab Kiến thức (chỉ để xem, không chọn dạng).
   v2.0.0 (25/11/2026): gọn lại theo kể chuyện — bỏ 3D, 7 dạng câu hỏi, tự soát, tự chấm, thẻ Hành động; Cổ học: Đọc → Kể lại → So → Đặt câu hỏi → Trả lời → Lời bàn; Đời sống: 1 chuyện + 1 bài học; thêm tab Kiến thức (ôn ngắt quãng).
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -212,6 +213,9 @@ details.card.kt>summary .meta{font-family:var(--label)}
 .kt-dau{text-align:center;font-family:var(--label);font-size:22px;color:var(--cta);line-height:1}
 .kt-than .kt-loi{border-left:3px solid var(--cta);padding:4px 12px;font-size:18.5px;font-weight:600}
 .kt-than .kt-mo{color:var(--ink-dim);font-style:italic}
+.dang-o{border-left:3px solid var(--q);padding:4px 0 4px 12px;display:flex;flex-direction:column;gap:4px;font-size:16.5px;line-height:1.5}
+.dang-o b{font-family:var(--label);font-size:12.5px;letter-spacing:.04em;color:var(--q)}
+.dang-o em{color:var(--ink-dim)}
 .peek{border:1px dashed var(--border);border-radius:12px;padding:10px 12px;font-size:15.5px;color:var(--ink-dim);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .gop{display:flex;gap:8px}
 .gop input{flex:1;min-height:44px;padding:6px 10px;font-size:15.5px}
@@ -280,7 +284,7 @@ var TEAM = {
   API_URL: 'https://script.google.com/macros/s/AKfycbyry4_jQq_4sjzLzi3xOdindwxhgMnCR1OHODaF5773uFdl4rZC9IswN1xgsJkp-LxinA/exec',                            // dán link máy chủ (kết thúc bằng /exec) vào đây; để trống thì app hỏi link lúc mở
   STORE: 'tgcc.'                          // tiền tố bộ nhớ máy (trùng bộ canh khởi động ở đầu trang)
 };
-var PHIEN = '2.0.0';
+var PHIEN = '2.0.1';
 var SO_TRUYEN = 243;
 var HET_GIO = { ping: 12000, load: 25000, ghi: 25000, lenh: 25000 };
 
@@ -302,6 +306,30 @@ var FORM_CHUAN = {
   'phieu_c3_cau': '🌱 Đề xuất bạn ấy thử điều gì khi kể chuyện tuần tới?', 'phieu_c3_nhac': 'Một việc cụ thể, làm được ngay trong tuần tới.',
   // Gợi ý khi bí chuyện đời sống (3 góc Việc / Vật / Người)
   'goi_y_doi_song_viec': 'Một VIỆC khiến mình dừng lại hôm nay', 'goi_y_doi_song_vat': 'Một VẬT khiến mình dừng lại hôm nay', 'goi_y_doi_song_nguoi': 'Một NGƯỜI khiến mình dừng lại hôm nay'
+};
+// v2.0.1: 7 dạng câu hỏi chỉ để XEM LẠI khi bí (lý thuyết nguyên văn của Nhưỡng; ví dụ Claude soạn, đã duyệt ở Cổng 2). Không còn chọn dạng.
+var DANG = [
+  { k: 'cam_tinh', nhom: 'dl', ten: 'Cảm tính', ly: 'Khai thác trực tiếp trạng thái tinh thần. Năng lượng và thái độ của một người thường bị chi phối mạnh mẽ bởi cảm xúc của họ đối với công việc hoặc môi trường xung quanh.',
+    vc: 'Lúc con chó xồ ra cắn, cảm giác đầu tiên dâng lên trong anh là gì?', vd: 'Khi phải báo trễ hạn lần thứ hai, em đang cảm thấy thế nào về công việc này?' },
+  { k: 'lang_dong', nhom: 'dl', ten: 'Lắng đọng', ly: 'Đây là đỉnh cao của câu hỏi động lực. Khi chạm vào "giá trị cốt lõi" hay "sự trăn trở", bạn đang tìm ra mỏ neo giữ chân họ lại khi gặp khó khăn, hoặc lý do sâu xa khiến họ cống hiến.',
+    vc: 'Đâu là điều anh coi trọng nhất đã bị chạm vào, khiến anh nổi giận đến mức cầm gậy?', vd: 'Đâu là lý do sâu xa nhất khiến em vẫn gắn bó với công việc này dù đang vất vả?' },
+  { k: 'kham_pha', nhom: 'dl', ten: 'Khám phá', ly: 'Bằng cách đưa họ vào bối cảnh phi lý hoặc khắc nghiệt, bạn đang kiểm tra giới hạn của động lực, sự đam mê và những khát vọng ẩn sâu mà đôi khi chính họ cũng chưa gọi tên được.',
+    vc: 'Nếu sáng mai cả làng đều không nhận ra anh chỉ vì chiếc áo thâm, anh sẽ làm gì đầu tiên?', vd: 'Nếu chỉ còn một tuần làm ở đây, em muốn hoàn thành điều gì nhất?' },
+  { k: 'lam_ro', nhom: 'nl', ten: 'Làm rõ', ly: 'Đánh giá khả năng nắm bắt vấn đề, sự chú ý đến chi tiết và tính chính xác của người trả lời. Một người có năng lực tốt sẽ không nói chung chung mà luôn có số liệu, định nghĩa cụ thể.',
+    vc: 'Từ lúc anh về tới cổng đến lúc giơ gậy, con chó đã làm những gì, trong bao lâu?', vd: 'Cụ thể báo cáo trễ mấy ngày, trễ ở phần nào?' },
+  { k: 'phan_tich', nhom: 'nl', ten: 'Phân tích', ly: 'Đo lường tư duy phản biện (Critical Thinking) và kỹ năng giải quyết vấn đề (Problem Solving). Khả năng tìm ra "nguyên nhân gốc rễ" là biểu hiện rõ nhất của năng lực thực thi hiệu quả.',
+    vc: 'Đâu là nguyên nhân gốc khiến con chó đuổi anh: tại con chó, hay tại điều gì đã thay đổi?', vd: 'Đâu là nguyên nhân gốc của việc trễ: thiếu số liệu, thiếu thời gian, hay chưa rõ yêu cầu?' },
+  { k: 'ket_noi', nhom: 'nl', ten: 'Kết nối', ly: 'Đo lường tư duy hệ thống (Systems Thinking). Khả năng nhìn thấy các mắt xích (đầu vào, đầu ra, quy trình) chứng tỏ họ có năng lực bao quát, lập kế hoạch và quản trị rủi ro tốt.',
+    vc: 'Cơn mưa, chiếc áo mượn và tiếng sủa của con chó nối với nhau thành chuỗi như thế nào?', vd: 'Báo cáo của em trễ thì khâu nào, người nào phía sau bị ảnh hưởng?' },
+  { k: 'tham_do_nl', nhom: 'gt', ten: 'Thăm dò – thiên về Năng lực', ly: 'Nếu bạn dùng nó để "test" xem thông tin người đó cung cấp có tính xác thực, logic và khớp với dữ liệu bạn đang có hay không (Ví dụ: Dự án này vượt tiến độ, bạn có thể chia sẻ bước nào đã được rút ngắn không?).',
+    vc: 'Anh nói con chó cắn xằng, vậy lúc đó anh đã thấy dấu hiệu nào cho thấy nó không nhận ra anh?', vd: 'Em nói đã gửi đúng hạn, em có thể cho anh xem thư gửi lúc mấy giờ không?' },
+  { k: 'tham_do_dl', nhom: 'gt', ten: 'Thăm dò – thiên về Động lực', ly: 'Nếu bạn dùng nó để kiểm xem mong muốn, cam kết mà người đó nói ra có thật lòng hay không, có khớp với những gì họ đã làm hay không (Ví dụ: Bạn nói rất muốn nhận dự án này, tuần qua bạn đã dành thời gian nào để chuẩn bị cho nó?).',
+    vc: 'Anh nói sẽ không đánh nó nữa, vậy lần sau gặp cảnh này anh sẽ làm gì khác?', vd: 'Em nói rất muốn nhận dự án mới, tuần qua em đã dành thời gian nào để chuẩn bị cho nó?' }
+];
+var NHOM_DANG = {
+  dl: { ten: 'ĐỘNG LỰC', mo: '(Khai thác ý chí, thái độ, sự phù hợp). Nhóm này dùng để đo lường xem họ có "muốn" làm hay không, và điều gì thúc đẩy họ tiến về phía trước.' },
+  nl: { ten: 'NĂNG LỰC', mo: '(Khai thác tư duy, kỹ năng, phương pháp). Nhóm này dùng để đo lường xem họ có "biết cách" làm hay không, tư duy của họ sắc bén đến đâu.' },
+  gt: { ten: 'GIAO THOA', mo: 'Riêng Câu hỏi THĂM DÒ là một dạng linh hoạt, có thể thuộc về cả hai nhóm tùy thuộc vào mục đích (điểm thăm dò) trong đầu bạn lúc đó:' }
 };
 function tenDang() { return ''; } // v2: không còn dạng câu hỏi (dữ liệu cũ vẫn giữ cột dang)
 function F(k) { var f = S.data && S.data.form; return f && f[k] != null && f[k] !== '' ? f[k] : (FORM_CHUAN[k] != null ? FORM_CHUAN[k] : ''); }
@@ -1226,6 +1254,7 @@ function veCauHoi(b) {
     S.tam.sauVe = function () { var d = $('#goi-y-hoi'); if (d) d.addEventListener('toggle', function () { if (d.open) veGoiYHoi(b); }); };
     h += '<details id="goi-y-hoi" class="card"><summary>💡 Xem gợi ý câu hỏi (nếu muốn)</summary><div id="vung-goi-y"><p class="meta">Đang mở gợi ý…</p></div></details>';
   }
+  h += '<details id="xem-7-dang" class="card"><summary>📘 Xem 7 dạng câu hỏi (khi bí)</summary><div class="kt-than">' + ve7Dang(b.loai === 'co_hoc') + '</div></details>';
   h += '<details class="card" id="xem-truyen"><summary>Xem lại truyện</summary><div id="vung-truyen"><p class="meta">Đang tải truyện…</p></div></details>';
   var sau = S.tam.sauVe;
   S.tam.sauVe = function () { if (sau) sau(); var d = $('#xem-truyen'); if (d) d.addEventListener('toggle', function () { if (d.open) veTruyenVao('#vung-truyen', soCuaBai(b), 'so'); }, { once: true }); };
@@ -1557,6 +1586,17 @@ ACT.ktOn = function (el) {
   if (S.man === 'nay') ve('#vung-kt', veTheKienThuc()); else veMan(true);
 };
 
+
+// --- 7 dạng câu hỏi: bảng tra cứu khi bí (v2.0.1) ---
+function ve7Dang(laCh) {
+  return ['dl', 'nl', 'gt'].map(function (g) {
+    return '<span class="kt-nhan">' + esc(NHOM_DANG[g].ten) + '</span><p class="kt-mo">' + esc(NHOM_DANG[g].mo) + '</p>' +
+      DANG.filter(function (d) { return d.nhom === g; }).map(function (d) {
+        return '<div class="dang-o"><b>' + esc(d.ten) + '</b><span>' + esc(d.ly) + '</span><em>Ví dụ' + (laCh == null ? ' (truyện cổ)' : '') + ': “' + esc(laCh === false ? d.vd : d.vc) + '”</em>' +
+          (laCh == null ? '<em>Ví dụ (đời sống): “' + esc(d.vd) + '”</em>' : '') + '</div>';
+      }).join('');
+  }).join('');
+}
 // --- tab Kiến thức (S-KT) ---
 MAN.kien = function () {
   var qt = laQt(), ds = qt ? dsTheTatCa() : dsTheHien(), sua = S.tam.suaKt;
@@ -1575,6 +1615,7 @@ MAN.kien = function () {
       (qt ? '<div class="row"><button type="button" class="link" data-act="ktSua" data-v="' + esc(t.id) + '">Sửa thẻ</button><button type="button" class="link" data-act="ktAnHien" data-v="' + esc(t.id) + '">' + (an ? 'Hiện lại' : 'Ẩn thẻ') + '</button></div>' : '') + '</details>';
   });
   if (qt && sua !== 'moi') h += '<button type="button" class="btn blk" data-act="ktSua" data-v="moi">+ Thêm thẻ</button>';
+  h += '<details class="card kt" id="bang-7-dang"><summary><h3 class="kt-tieu">📘 7 dạng câu hỏi</h3><span class="meta">tra cứu khi bí · không ôn theo lịch</span></summary><div class="kt-than">' + ve7Dang(null) + '</div></details>';
   h += '<div id="kq-kt" role="status"></div></div>';
   return h;
 };
