@@ -9,11 +9,12 @@
 <meta name="apple-mobile-web-app-title" content="Câu chuyện">
 <title>Thế giới các câu chuyện</title>
 <!--
-  THẾ GIỚI CÁC CÂU CHUYỆN — trang (index.html) · v2.0.1
+  THẾ GIỚI CÁC CÂU CHUYỆN — trang (index.html) · v3.0.0
   Đặt tệp này và kho-truyen.json cạnh nhau trên kho mã (GitHub → Vercel). Máy chủ: Code.gs (Apps Script).
   Link máy chủ: dán vào TEAM.API_URL bên dưới, hoặc dán trong app ở ☰ › Cài đặt › Máy chủ.
   Hồ sơ thiết kế: claude/the-gioi-cac-cau-chuyen-ho-so-du-an.md
   v1.0.0 (24/11/2026): bản đầu (Đ1–Đ9, ST1–ST39).
+  v3.0.0 (27/11/2026): cả việc một ngày trên một trang có danh sách tích; Cổ học: Đọc → Kể lại (bắt buộc) → hỏi và trả lời liền từng câu → Bài học từ truyện → Nộp; Đời sống: chuyện → bài học → câu hỏi tùy chọn → Nộp; truyện trình bày dễ đọc (tách lời thoại, đoạn ngắn) và tải sẵn cả kho; bài Cổ học của nhau mở ngay; ghi nhận thứ Năm có bảng tra soát tuần.
   v2.0.1 (25/11/2026): thêm ô ẩn "📘 Xem 7 dạng câu hỏi" ở bước Đặt câu hỏi và trong tab Kiến thức (chỉ để xem, không chọn dạng).
   v2.0.0 (25/11/2026): gọn lại theo kể chuyện — bỏ 3D, 7 dạng câu hỏi, tự soát, tự chấm, thẻ Hành động; Cổ học: Đọc → Kể lại → So → Đặt câu hỏi → Trả lời → Lời bàn; Đời sống: 1 chuyện + 1 bài học; thêm tab Kiến thức (ôn ngắt quãng).
 -->
@@ -134,7 +135,23 @@ body:has(.bnav) #toast{bottom:160px}
 .thieu{font-family:var(--label);font-size:12px;color:var(--warm);line-height:1.4}
 .thieu button{color:var(--warm);text-decoration:underline;font-family:var(--label);font-size:12px;min-height:44px;padding:0 6px}
 .luu{font-family:var(--label);font-size:11.5px;color:var(--ink-faint)}
-.truyen p{margin:0 0 .75em;font-size:18px;line-height:1.65}
+.truyen p{margin:0 0 .9em;font-size:19px;line-height:1.75}
+.truyen p.thoai{color:var(--q);border-left:3px solid var(--q);padding-left:12px;font-style:italic}
+.truyen.chinh>p:first-child::first-letter{font-size:2.1em;color:var(--cta);float:left;line-height:1;margin:4px 6px 0 0;font-weight:600}
+.luoi-tich{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}.cot-tich{display:flex;flex-direction:column}.cot-tich>.meta{color:var(--cta);font-size:11.5px;padding:2px 0}
+.tich .dong-tich{display:flex;align-items:center;gap:8px;min-height:44px;font-family:var(--label);font-size:12.5px;color:var(--ink);text-align:left;width:100%;border-top:1px solid var(--border-soft)}
+.tich .dong-tich i{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;flex:none}
+.tich .dong-tich.on{color:var(--accent-2)}.tich .dong-tich.on i{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.khoi{display:flex;flex-direction:column;gap:12px;scroll-margin-top:12px}
+.nhan-khoi{margin-top:10px;font-size:13px;color:var(--cta);scroll-margin-top:12px}
+[id^="muc-"],#nop-co_hoc,#nop-doi_song,#vung-loiban{scroll-margin-top:16px}
+.card.ds{border-left:4px solid var(--m2)}
+.goi-y-dong{justify-content:space-between;flex-wrap:nowrap;border-top:1px solid var(--border-soft);padding-top:8px}
+.luoi3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.luoi3>div{display:flex;flex-direction:column;gap:2px}
+.bang-tuan{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}.bang-tuan th{font-family:var(--label);font-size:11.5px;color:var(--ink-dim);text-align:left;font-weight:700;padding:6px 4px;border-bottom:1px solid var(--border)}
+.bang-tuan td{padding:7px 4px;border-bottom:1px solid var(--border-soft);vertical-align:top}.bang-tuan td:last-child,.bang-tuan th:last-child{text-align:center;width:56px}
+.bai-tuan{border-top:1px solid var(--border);padding-top:10px;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.o-tuan{display:flex;flex-direction:column;gap:3px;font-size:16.5px}.o-tuan.bh{border-left:3px solid var(--cta);padding-left:10px}
 .truyen .doan{border-radius:6px;transition:background .2s;user-select:text;-webkit-user-select:text}
 .truyen .doan.giu{background:rgba(255,212,0,.12)}
 .ten-truyen{font-size:24px;line-height:1.25;font-weight:600;letter-spacing:.01em}
@@ -281,10 +298,10 @@ details.card.kt>summary .meta{font-family:var(--label)}
 var TEAM = {
   APP_ID: 'the-gioi-cau-chuyen',          // phải trùng TEAM.APP_ID trong Code.gs
   TEN_APP: 'Thế giới các câu chuyện',
-  API_URL: 'https://script.google.com/macros/s/AKfycbyry4_jQq_4sjzLzi3xOdindwxhgMnCR1OHODaF5773uFdl4rZC9IswN1xgsJkp-LxinA/exec',                            // dán link máy chủ (kết thúc bằng /exec) vào đây; để trống thì app hỏi link lúc mở
+  API_URL: '',                            // dán link máy chủ (kết thúc bằng /exec) vào đây; để trống thì app hỏi link lúc mở
   STORE: 'tgcc.'                          // tiền tố bộ nhớ máy (trùng bộ canh khởi động ở đầu trang)
 };
-var PHIEN = '2.0.1';
+var PHIEN = '3.0.0';
 var SO_TRUYEN = 243;
 var HET_GIO = { ping: 12000, load: 25000, ghi: 25000, lenh: 25000 };
 
@@ -510,7 +527,7 @@ function xuLyGhiHong(o, k) {
 }
 var TEN_THIEU = { bai_hoc: 'bài học', cau_hoi: 'câu hỏi', dang_cau_hoi: 'dạng câu hỏi hoặc người được hỏi', ke_lai: 'bản kể lại', tra_loi: 'câu trả lời', chuyen: 'chuyện', quan_sat: 'ô Quan sát', phan_tich: 'ô Phân tích', duc_ket: 'ô Đúc kết', tra_loi_phieu: '3 câu' };
 function sauKhiHangTrong() {
-  if (S.man === 'bai' && S.bai && S.tam.choLoiBan) taiLoiBan();
+  if (S.tam.choLoiBan && S.db.bai[S.tam.choLoiBan] && (S.man === 'nay' || S.man === 'bai')) taiLoiBan(S.db.bai[S.tam.choLoiBan]);
   if (S.tam.taiSauHang) { S.tam.taiSauHang = false; taiNen(); }
 }
 
@@ -688,7 +705,8 @@ function di(man, giuLich) {
 function veLaiNen(ep) { // dữ liệu nền về: chỉ vẽ lại màn xem, không đụng ô đang gõ (luật 2)
   if (!MAN_XEM[S.man] && !ep) { veTrangThaiGhi(); return; }
   if (dangGo()) { S.tam.choVe = true; return; }
-  if (MAN_XEM[S.man]) veMan(true);
+  if (S.man === 'nay' && !ep && $('#vung-dau')) return veNayNhe(); // v3: trang một ngày có ô nhập — chỉ vẽ lại phần đầu, danh sách tích, thẻ kiến thức
+  if (MAN_XEM[S.man] || (ep && S.man === 'bai')) veMan(true);
 }
 window.addEventListener('popstate', function () { if (S.man === 'bai') xaCho(); if (!MAN_XEM[S.man] && S.pw && S.nguoi && S.data) { S.man = S.tab || 'nay'; veMan(); } });
 
@@ -735,7 +753,7 @@ document.addEventListener('visibilitychange', function () {
 window.addEventListener('online', function () { chayHang(); });
 window.addEventListener('pagehide', function () { xaCho(); luuDb(); luuQ(); });
 setInterval(kiemNgayMoi, 30000);
-function kiemNgayMoi() { if (S.ngayVe && hn() !== S.ngayVe && S.data) { if (S.man === 'bai') baoNhe('Đã sang ngày mới. Bài của hôm qua đã đóng — bấm ✕ để về Hôm nay.'); else veLaiNen(); taiNen(); } }
+function kiemNgayMoi() { if (S.ngayVe && hn() !== S.ngayVe && S.data) { if (S.man === 'bai') baoNhe('Đã sang ngày mới. Bài của hôm qua đã đóng — bấm ✕ để về Hôm nay.'); else veLaiNen(S.man === 'nay'); taiNen(); } }
 function gian(el) { if (!el || el.tagName !== 'TEXTAREA') return; el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px'; }
 // ô nhập chung cho màn quản trị: data-f="v:khoa" → S.v[khoa]
 var O_NHAN = {};
@@ -946,32 +964,35 @@ ACT.chonNguoi = function (el) {
 function veTenBiAn() { S.nguoi = ''; LS.del('nguoi'); S.tam.biAn = true; moChonNguoi(); }
 
 // ============ 16. S4 HÔM NAY (ST14, ST23, ST29, ST33) ============
-MAN.nay = function () {
-  var me = toi(), nay = hn(), so = truyenCuaNgay(nay), ten = tenTruyen(so);
-  var ch = baiCua('co_hoc', nay), ds = baiCua('doi_song', nay);
-  var conBai = (ch && ch.trang_thai === 'da_nop' ? 0 : 1) + (ds && ds.trang_thai === 'da_nop' ? 0 : 1);
-  var nutDau = !ch || ch.trang_thai !== 'da_nop' ? 'ch' : (!ds || ds.trang_thai !== 'da_nop' ? 'ds' : '');
-  var h = '<div class="shell">';
-  h += '<div class="top"><span class="t">THẾ GIỚI CÁC CÂU CHUYỆN</span><span class="v">v' + PHIEN + '</span><button type="button" class="ib" data-act="menu" aria-label="Menu">☰' + (soGhiNhan() ? '<span class="so">' + soGhiNhan() + '</span>' : '') + '</button></div>';
-  h += '<div><span class="me"><span class="cham" style="background:' + mauTv(S.nguoi) + '"></span>' + esc(me ? me.ten : '') + '</span>' +
-    '<div class="date">' + ngayDep(nay) + '<small>' + (conBai ? 'Hôm nay còn ' + conBai + ' bài' + (conBai === 2 ? ' · khoảng 20 phút' : '') : '✓ Xong cả 2 bài hôm nay') + '</small></div></div>';
-  h += '<div class="chip-dong" id="tt-ghi">' + chuTrangThaiGhi() + '</div>';
-  h += veTheChuoi();
-  h += veDaiThuNam();
-  var nSao = saoMoi(); if (nSao) h += '<button type="button" class="dai vang" data-act="moSaoCua">⭐ Có ' + nSao + ' ⭐ hoặc góp ý mới cho câu hỏi của bạn ›</button>';
-  h += veDongBanBe(nay);
-  // thẻ Cổ học
-  if (!cfg('NGAY_BAT_DAU') || !so) h += '<div class="card"><span class="k">☀ CỔ HỌC</span><span>Chưa có lịch truyện.</span></div>';
-  else if (!ten && !(S.data && S.data.truyenHomNay && S.data.truyenHomNay.ten)) {
-    var khoTrong = !((S.data && S.data.dsTruyen) || []).length;
-    h += '<div class="card"><span class="k">☀ CỔ HỌC · TRUYỆN ' + so + '/' + SO_TRUYEN + '</span><span>' + (khoTrong ? 'Chưa có truyện — mở ☰ › Kho truyện › Nạp kho.' : 'Chưa có truyện số ' + so + ' trong kho — nhờ Quản trị kiểm ☰ › Kho truyện.') + '</span>' +
-      (laQt() ? '<button type="button" class="btn" data-act="moMan" data-v="kho">Mở Kho truyện</button>' : '') + '</div>';
-  } else h += veTheBai('co_hoc', ch, so, ten || S.data.truyenHomNay.ten, nutDau === 'ch');
-  h += veTheBai('doi_song', ds, 0, '', nutDau === 'ds');
-  h += '<div id="vung-kt">' + veTheKienThuc() + '</div>';
-  h += '</div>';
+MAN.nay = function () { // v3: cả việc một ngày trên một trang
+  var nay = hn(), so = truyenCuaNgay(nay);
+  KHOI.co_hoc = cfg('NGAY_BAT_DAU') && so ? { id: idBai('co_hoc', nay), tao: {} } : null;
+  KHOI.doi_song = { id: idBai('doi_song', nay), tao: {} };
+  var h = '<div class="shell"><div id="vung-dau">' + veDauNay() + '</div>';
+  h += '<div id="vung-tich">' + veTich() + '</div>';
+  h += '<div id="khoi-co_hoc" class="khoi">' + veKhoiCHHomNay() + '</div>';
+  h += '<div id="khoi-doi_song" class="khoi">' + veKhoiDS() + '</div>';
+  h += '<div id="vung-kt">' + veTheKienThuc() + '</div></div>';
+  henSau(sauVeNay);
   return h;
 };
+function veDauNay() {
+  var me = toi(), nay = hn(), h = '';
+  h += '<div class="top"><span class="t">THẾ GIỚI CÁC CÂU CHUYỆN</span><span class="v">v' + PHIEN + '</span><button type="button" class="ib" data-act="menu" aria-label="Menu">☰' + (soGhiNhan() ? '<span class="so">' + soGhiNhan() + '</span>' : '') + '</button></div>';
+  h += '<div><span class="me"><span class="cham" style="background:' + mauTv(S.nguoi) + '"></span>' + esc(me ? me.ten : '') + '</span><div class="date">' + ngayDep(nay) + '</div></div>';
+  h += '<div class="chip-dong" id="tt-ghi">' + chuTrangThaiGhi() + '</div>';
+  h += veTheChuoi() + veDaiThuNam();
+  var nSao = saoMoi(); if (nSao) h += '<button type="button" class="dai vang" data-act="moSaoCua">⭐ Có ' + nSao + ' ⭐ hoặc góp ý mới cho câu hỏi của bạn ›</button>';
+  return h + veDongBanBe(nay);
+}
+function veNayNhe() { // dữ liệu nền về: vẽ lại phần không có ô nhập; sang ngày mới (giờ máy chủ) thì vẽ lại cả trang
+  if (!KHOI.doi_song || KHOI.doi_song.id !== idBai('doi_song', hn()) || !!KHOI.co_hoc !== !!(cfg('NGAY_BAT_DAU') && truyenCuaNgay(hn()))) return veMan(true);
+  veTab(); ve('#vung-dau', veDauNay()); ve('#vung-tich', veTich()); if (!document.querySelector('#vung-kt :focus')) ve('#vung-kt', veTheKienThuc()); }
+function sauVeNay() { // tải sẵn: cả kho truyện, bản máy chủ của truyện hôm nay, khung ghi nhận thứ Năm
+  if (!window.__khoTinhGoi) { window.__khoTinhGoi = 1; setTimeout(napKhoTinh, 30); }
+  lamNongTruyen(truyenCuaNgay(hn()));
+  var pt = S.data && S.data.phieuTuan; if (pt && pt.mo) setTimeout(function () { taiKhungNgam(pt.tuan); }, 400);
+}
 function veTheChuoi() {
   var c = chuoiToi(), nhom = chuoiNhom(), me = toi(), nay = hn(), dots = '';
   for (var i = 6; i >= 0; i--) {
@@ -995,41 +1016,12 @@ function veDongBanBe(nay) {
   var meta = (S.data && S.data.metaKhac) || [], ten = {};
   meta.forEach(function (m) { if (m.loai === 'co_hoc' && m.trang_thai === 'da_nop' && m.ngay_truyen === nay) ten[m.nguoi] = 1; });
   var ds = Object.keys(ten).map(tenTv); if (!ds.length) return '';
-  var minh = daNopTruyen(nay);
-  return '<button type="button" class="dai tim" data-act="' + (minh ? 'xemCungHomNay' : 'batDauCoHoc') + '">✦ ' + esc(ds.join(', ')) + ' đã nộp truyện hôm nay — ' + (minh ? 'xem bài ›' : 'nộp bài của bạn để xem') + '</button>';
-}
-function veTheBai(loai, b, so, ten, noi) {
-  var laCh = loai === 'co_hoc', nop = b && b.trang_thai === 'da_nop', h = '<div class="card story">';
-  h += '<span class="k"><span>' + (laCh ? '☀ CỔ HỌC · TRUYỆN ' + so + '/' + SO_TRUYEN : '◐ ĐỜI SỐNG') + '</span><span>' + (nop ? (b.kieu === 'ngan' ? 'bản ngắn' : '') : (laCh && b && b.kieu === 'ngan' ? '~4 phút' : laCh ? '~12 phút' : '~5 phút')) + '</span></span>';
-  if (laCh) h += '<h3>' + esc(ten) + '</h3>';
-  else h += '<span>' + (b && co(b.chuyen) ? esc(catChu(b.chuyen, 90)) : 'Chưa ghi chuyện hôm nay.') + '</span>';
-  var buoc = b ? +b.buoc_dang_lam || 1 : 0;
-  var nhan = [['Đọc', 1], ['Kể lại', 3], ['Câu hỏi', 4], ['Trả lời', 5]];
-  if (laCh && b && b.kieu === 'ngan') nhan = [['Đọc', 1], ['1 câu hỏi', 4], ['Trả lời', 5]];
-  if (!laCh) h += '<div class="steps">' + [['Kể chuyện', 'chuyen'], ['Bài học', 'duc_ket']].map(function (n) { var x = nop || (b && co(b[n[1]])); return '<span class="' + (x ? 'on' : '') + '">' + (x ? '✓ ' : '') + n[0] + '</span>'; }).join('') + '</div>';
-  else h += '<div class="steps">' + nhan.map(function (n) { return '<span class="' + (nop || buoc > n[1] ? 'on' : (b && buoc >= (n[1] === 3 ? 2 : n[1]) && buoc <= n[1] ? 'nay' : '')) + '">' + (nop || buoc > n[1] ? '✓ ' : '') + n[0] + '</span>'; }).join('') + '</div>';
-  if (nop) {
-    h += '<div class="row"><span class="xong">✓ Đã nộp ' + gio(b.nop_luc) + '</span>' + (conTrongHang('E3:' + b.id) ? '<span class="chip-tt vang">đang gửi</span>' : '') + '</div>';
-    var trich = laCh ? nz((cauCua(b.id).filter(function (c) { return co(c.cau); })[0] || {}).cau) : nz(b.duc_ket);
-    if (co(trich)) h += '<div class="trich">' + esc(catChu(trich, 160)) + '</div>';
-    h += '<div class="row"><button type="button" class="btn" data-act="moBai" data-v="' + loai + '">Xem lại' + (laCh ? ' · Lời bàn' : '') + '</button>' +
-      (laCh && b.kieu === 'ngan' ? '<button type="button" class="link" data-act="lamBanDu" data-v="' + esc(b.id) + '">Làm thêm thành bản đủ</button>' : '') + '</div>';
-  } else {
-    var chu = !b ? (laCh ? 'Bắt đầu bài Cổ học' : 'Kể chuyện hôm nay') : 'Làm tiếp bước ' + viTriBuoc(b) + '/' + soBuoc(b);
-    h += '<button type="button" class="btn ' + (noi ? 'cta ' : '') + 'blk" data-act="moBai" data-v="' + loai + '">' + chu + '</button>';
-    if (laCh) h += b && b.kieu === 'ngan' ? '<button type="button" class="link" data-act="doiKieu" data-v="' + loai + '" data-k="du">Làm bản đủ</button>'
-      : '<button type="button" class="link" data-act="doiKieu" data-v="' + loai + '" data-k="ngan">Bản ngắn (~4 phút)</button>';
-  }
-  return h + '</div>';
+  return '<button type="button" class="dai tim" data-act="xemCungHomNay">✦ ' + esc(ds.join(', ')) + ' đã nộp truyện hôm nay — xem bài ›</button>';
 }
 ACT.menu = function () { veMenu(); };
 ACT.moMan = function (el) { dongLop(); di(el.dataset.v); };
 ACT.moSaoCua = function () { di('saocua'); };
-ACT.batDauCoHoc = function () { moBaiHomNay('co_hoc'); };
 ACT.xemCungHomNay = function () { S.tam.cungLoc = hn(); S.tab = 'cung'; di('cung'); };
-ACT.moBai = function (el) { moBaiHomNay(el.dataset.v); };
-ACT.doiKieu = function (el) { var b = moBaiHomNay(el.dataset.v, true); doiKieuBai(b, el.dataset.k); };
-ACT.lamBanDu = function (el) { var b = S.db.bai[el.dataset.v]; if (b) { S.bai = { id: b.id }; doiKieuBai(b, 'du'); } };
 
 // ============ 17. S12 LỊCH NGÀY GIỮ (ST24) ============
 ACT.moLich = function () { S.tam.thangLich = hn().slice(0, 7); veLich(); };
@@ -1057,136 +1049,102 @@ function veLich() {
 }
 ACT.thangLich = function (el) { var t = S.tam.thangLich, y = +t.slice(0, 4), m = +t.slice(5, 7) + (+el.dataset.v); if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } S.tam.thangLich = y + '-' + pad(m); veLich(); };
 
-// ============ 18. BÀI: tạo, bước, kiểu (F2 Cổ học, F3 Đời sống; R8) ============
-var DS_BUOC = { co_hoc: { du: [1, 2, 3, 4, 5, 6], ngan: [1, 4, 5, 6] }, doi_song: { du: [1, 6], ngan: [1, 6] } }; // v2: Đời sống một màn
-function kieuHien(b) { return b._nangCap ? 'du' : b.kieu; }
-function dsBuoc(b) { return DS_BUOC[b.loai][kieuHien(b)] || DS_BUOC[b.loai].du; }
-function viTriBuoc(b) { var ds = dsBuoc(b), n = +b.buoc_dang_lam || 1; for (var i = 0; i < ds.length; i++) if (ds[i] >= n) return i + 1; return ds.length; }
-function soBuoc(b) { return dsBuoc(b).length; }
+// ============ 18. BÀI v3: CẢ NGÀY TRÊN MỘT TRANG (Nhưỡng 27/11/2026) ============
+// Cổ học: Đọc → Kể lại (truyện ẩn, bắt buộc) → hỏi và trả lời liền từng câu → Bài học từ truyện → Nộp (mở Lời bàn).
+// Đời sống: Chuyện hôm nay → Bài học từ chuyện → câu hỏi (tùy chọn) → Nộp. Mỗi khối một nút Nộp; đủ cả hai mới tính ngày giữ.
+// Mỗi khối vẽ vào vùng riêng #khoi-co_hoc / #khoi-doi_song (luật 3); gõ chữ chỉ vẽ lại danh sách tích và nút Nộp (luật 2).
+var KHOI = { co_hoc: null, doi_song: null }; // bài của từng khối trên trang đang mở: { id, tao } (chưa có bài thì tạo khi chạm lần đầu)
 function coTheSua(b) { return !!b && b.nguoi === S.nguoi && b.ngay === hn(); }
 function idBai(loai, ngay) { return (loai === 'co_hoc' ? 'ch-' : 'ds-') + S.nguoi + '-' + ngay; }
+function soCuaBai(b) { return +b.truyen_so || truyenCuaNgay(b.ngay_truyen); }
+function roO(b) { return !b || coTheSua(b) ? '' : ' readonly'; }
 function taoBai(loai, them) {
   var nay = hn(), o = Object.assign({ id: idBai(loai, nay), nguoi: S.nguoi, loai: loai, ngay: nay, lam_bu: '0', kieu: 'du', trang_thai: 'nhap', buoc_dang_lam: '1', tu_cham: {}, tao_luc: lucVN() }, them || {});
   if (loai === 'co_hoc') { o.ngay_truyen = o.ngay_truyen || nay; o.truyen_so = String(truyenCuaNgay(o.ngay_truyen)); } else o.che_do_xem = 'rieng';
   S.db.bai[o.id] = o;
-  var row = { id: o.id, loai: loai, ngay: o.ngay, lam_bu: o.lam_bu, kieu: o.kieu, trang_thai: 'nhap', buoc_dang_lam: '1' };
+  var row = { id: o.id, loai: loai, ngay: o.ngay, lam_bu: o.lam_bu, kieu: o.kieu, trang_thai: 'nhap', buoc_dang_lam: o.buoc_dang_lam };
   if (loai === 'co_hoc') row.ngay_truyen = o.ngay_truyen; else row.che_do_xem = 'rieng';
   xepHang('E3', 'E3:' + o.id, row); luuDb(); chayHang();
   return o;
 }
-function moBaiHomNay(loai, imLang) {
-  var b = baiCua(loai, hn());
-  if (!b) b = taoBai(loai);
-  S.bai = { id: b.id }; S.tam.dangMo = null; S.tam.loiBan = null;
-  if (!imLang) { S.tam.buocXem = b.trang_thai === 'da_nop' ? 6 : (+b.buoc_dang_lam || 1); di('bai'); }
-  return b;
-}
+function baiKhoi(loai) { var k = KHOI[loai]; return k ? S.db.bai[k.id] || null : null; }
+function damBaoBai(loai) { var k = KHOI[loai]; if (!k) return null; return S.db.bai[k.id] || taoBai(loai, Object.assign({ id: k.id }, k.tao || {})); }
+function baiDangLam() { return baiKhoi('co_hoc'); } // giữ tên cũ cho phần dùng chung
 function moLamBu(ngayTruyen, dangDo) { // R5: làm bù truyện ngày đã lỡ — bài mới (bu-…) hoặc làm tiếp bản nháp đang dở
   var b = dangDo && S.db.bai[dangDo];
   if (b && b.trang_thai === 'nhap') {
-    b.lam_bu = '1'; b.ngay = hn();
-    xepHang('E3', 'E3:' + b.id, { id: b.id, lam_bu: '1', ngay: b.ngay, ngay_truyen: b.ngay_truyen }); luuDb(); chayHang();
+    b.lam_bu = '1'; b.ngay = hn(); b.kieu = 'du';
+    xepHang('E3', 'E3:' + b.id, { id: b.id, lam_bu: '1', ngay: b.ngay, ngay_truyen: b.ngay_truyen, kieu: 'du' }); luuDb(); chayHang();
   } else {
     var id = 'bu-' + S.nguoi + '-' + ngayTruyen;
     b = S.db.bai[id] || taoBai('co_hoc', { id: id, lam_bu: '1', ngay_truyen: ngayTruyen });
   }
-  S.bai = { id: b.id }; S.tam.loiBan = null; S.tam.buocXem = b.trang_thai === 'da_nop' ? 6 : (+b.buoc_dang_lam || 1); di('bai');
+  S.bai = { id: b.id }; di('bai');
 }
-function baiDangLam() { return S.bai && S.db.bai[S.bai.id]; }
-function diBuoc(n) {
-  var b = baiDangLam(); if (!b) return di('nay');
-  xaCho(); S.tam.buocXem = n;
-  if (b.trang_thai !== 'da_nop' && n < 6 && coTheSua(b) && String(n) !== b.buoc_dang_lam) { b.buoc_dang_lam = String(n); choGhi('E3', b.id, 'buoc_dang_lam', String(n)); xaCho(); }
-  S.man = 'bai'; veMan();
-}
-function doiKieuBai(b, kieu) {
-  if (!b || !coTheSua(b)) return;
-  if (b.trang_thai === 'da_nop') { // "Làm thêm thành bản đủ": chỉ đổi kiểu khi đủ ô (tránh máy chủ từ chối cả lệnh)
-    if (kieu !== 'du' || b.kieu === 'du') return;
-    b._nangCap = true; var t = thieuBai(Object.assign({}, b, { kieu: 'du' }));
-    S.bai = { id: b.id }; S.tam.buocXem = t ? t.buoc : 5; S.man = 'bai'; veMan(); return;
-  }
-  b.kieu = kieu; choGhi('E3', b.id, 'kieu', kieu);
-  var n = +b.buoc_dang_lam || 1;
-  if (kieu === 'ngan' && b.loai === 'co_hoc' && (n === 2 || n === 3)) { b.buoc_dang_lam = '4'; choGhi('E3', b.id, 'buoc_dang_lam', '4'); }
-  xaCho();
-  S.bai = { id: b.id }; S.tam.buocXem = +b.buoc_dang_lam || 1;
-  bao(kieu === 'ngan' ? 'Đã chuyển sang bản ngắn — chữ đã gõ vẫn giữ.' : 'Đã chuyển sang bản đủ — chữ đã gõ vẫn giữ.');
-  S.man = 'bai'; veMan();
-}
-function thieuBai(b) { // giống thieuKhiNop_ ở máy chủ (v2)
-  if (b.loai === 'doi_song') { if (!co(b.chuyen)) return { buoc: 1, chu: 'Chưa kể chuyện' }; if (!co(b.duc_ket)) return { buoc: 1, chu: 'Chưa ghi bài học' }; return null; }
-  if (b.kieu !== 'ngan' && !co(b.ke_lai)) return { buoc: 2, chu: 'Chưa có bản kể lại' };
+function thieuBai(b) { // giống thieuKhiNop_ ở máy chủ (v3)
+  if (b.loai === 'doi_song') { if (!co(b.chuyen)) return { muc: 'muc-ds', chu: 'Chưa kể chuyện hôm nay' }; if (!co(b.duc_ket)) return { muc: 'muc-ds-bh', chu: 'Chưa ghi bài học từ chuyện' }; return null; }
+  if (b.kieu !== 'ngan' && !co(b.ke_lai)) return { muc: 'muc-ch', chu: 'Chưa kể lại truyện' };
   var cs = cauCua(b.id).filter(function (c) { return co(c.cau); });
-  if (!cs.length) return { buoc: 4, chu: 'Cần ít nhất 1 câu hỏi' };
-  for (var j = 0; j < cs.length; j++) if (!co(cs[j].tra_loi)) return { buoc: 5, chu: 'Câu ' + (j + 1) + ' chưa trả lời' };
+  if (!cs.length) return { muc: 'muc-ch-hoi', chu: 'Cần ít nhất 1 câu hỏi' };
+  for (var j = 0; j < cs.length; j++) if (!co(cs[j].tra_loi)) return { muc: 'muc-ch-hoi', chu: 'Câu ' + (j + 1) + ' chưa trả lời' };
+  if (b.kieu !== 'ngan' && !co(b.duc_ket)) return { muc: 'muc-ch-bh', chu: 'Chưa ghi bài học từ truyện' };
   return null;
 }
-// --- nhận chữ gõ ---
-O_NHAN.b = function (truong, val) {
-  var b = baiDangLam(); if (!b || !coTheSua(b)) return;
+// --- nhận chữ gõ: data-f="k:<loai>:<trường>" cho bài, "c:<id câu>:<trường>" cho câu hỏi ---
+O_NHAN.k = function (con, val) {
+  var p = con.split(':'), loai = p[0], truong = p[1], b = damBaoBai(loai); if (!b || !coTheSua(b)) return;
   b[truong] = val; b.sua_luc = lucVN();
   choGhi('E3', b.id, truong, val);
-  veNutBai();
+  capNhatKhoi(loai);
 };
 O_NHAN.c = function (con, val) {
-  var p = con.split(':'), c = S.db.cau[p[0]], b = baiDangLam(); if (!c || !b || !coTheSua(b)) return;
+  var p = con.split(':'), c = S.db.cau[p[0]], b = c && S.db.bai[c.bai_id]; if (!c || !b || !coTheSua(b)) return;
   c[p[1]] = val; c.sua_luc = lucVN();
   choGhi('E4', c.id, p[1], val);
-  veNutBai();
+  capNhatKhoi(b.loai);
 };
-
-// ============ 19. MÀN LÀM BÀI ============
-var TEN_BUOC = { co_hoc: { 1: 'Đọc', 2: 'Kể lại', 3: 'So với truyện', 4: 'Đặt câu hỏi', 5: 'Trả lời', 6: 'Xong' }, doi_song: { 1: 'Kể chuyện', 6: 'Xong' } };
-MAN.bai = function () {
-  var b = baiDangLam(); if (!b) { S.man = 'nay'; return MAN.nay(); }
-  var n = S.tam.buocXem || +b.buoc_dang_lam || 1, ds = dsBuoc(b);
-  if (ds.indexOf(n) < 0) n = ds.filter(function (x) { return x >= n; })[0] || 6;
-  if (b.trang_thai === 'da_nop' && !b._nangCap && n !== 6 && !coTheSua(b)) n = 6;
-  S.tam.buocXem = n;
-  var laCh = b.loai === 'co_hoc', vt = ds.indexOf(n) + 1, so = laCh ? soCuaBai(b) : 0;
-  var tieuDe = (laCh ? 'Cổ học · Truyện ' + so : 'Đời sống') + (b.lam_bu === '1' ? ' · làm bù ' + dm(b.ngay_truyen) : '') + ' · ' + TEN_BUOC[b.loai][n] + (laCh && kieuHien(b) === 'ngan' ? ' · bản ngắn' : '');
-  var h = '<div class="shell co-nav"><div class="rbar"><button type="button" class="ib" data-act="dongBai" aria-label="Về Hôm nay (giữ nháp)">✕</button><span class="t">' + esc(tieuDe) + '</span>' +
-    (ds.length > 2 ? '<span class="t" style="flex:0;white-space:nowrap">' + (n === 6 ? '✓' : 'Bước ' + vt + '/' + (ds.length - 1)) + '</span>' : '') + '</div>' +
-    (ds.length > 2 ? '<div class="prog"><i style="width:' + Math.round(vt / ds.length * 100) + '%"></i></div>' : '');
-  if (!coTheSua(b) && b.trang_thai !== 'da_nop') h += '<div class="dai vang">Bài ngày ' + dm(b.ngay) + ' đã qua 23:59 — chỉ đọc. Truyện này nằm trong Sổ bài › Chưa học, làm tiếp được như làm bù.</div>';
-  if (laCh && b.trang_thai !== 'da_nop' && n < 6 && coTheSua(b)) h += '<div class="row" style="justify-content:flex-end;margin-top:-6px"><button type="button" class="link" data-act="doiKieuDangLam" data-k="' + (b.kieu === 'ngan' ? 'du' : 'ngan') + '">' + (b.kieu === 'ngan' ? 'Làm bản đủ' : 'Bản ngắn (~4 phút)') + '</button></div>';
-  h += ({ 1: laCh ? veDoc : veGhiChuyen, 2: veKeLai, 3: veDoiChieu, 4: veCauHoi, 5: veTraLoi, 6: veXong })[n](b);
-  h += '</div><div class="bnav" id="bnav-bai">' + chuNutBai(b, n) + '</div>';
-  return h;
-};
-function veNutBai() { var b = baiDangLam(); if (b && S.man === 'bai') ve('#bnav-bai', chuNutBai(b, S.tam.buocXem)); }
-function nutNop(b) {
-  var xem = b._nangCap ? Object.assign({}, b, { kieu: 'du' }) : b, t = thieuBai(xem), sua = coTheSua(b);
-  if (b.trang_thai === 'da_nop' && !b._nangCap) return { nut: '<button type="button" class="btn cta" data-act="buoc" data-v="6">Lưu và xem lại</button>', ghi: t ? 'Bài đã nộp: ô bắt buộc không được để trống (' + esc(t.chu) + ')' : '' };
-  return { nut: '<button type="button" class="btn cta" data-act="nopBai"' + (t || !sua ? ' disabled' : '') + '>' + (b._nangCap ? 'Nộp bản đủ' : 'Nộp bài') + '</button>',
-    ghi: t ? 'Còn thiếu: ' + esc(t.chu) + (t.buoc !== S.tam.buocXem ? ' <button type="button" data-act="buoc" data-v="' + t.buoc + '">Đi tới</button>' : '') : '' };
+function capNhatKhoi(loai) { // chỉ vẽ lại phần không có ô nhập
+  if ($('#vung-tich')) ve('#vung-tich', veTich());
+  ve('#nop-' + loai, veNutNop(loai));
+  if (loai === 'co_hoc') ve('#nut-kelai', veNutKeLai());
 }
-function chuNutBai(b, n) {
-  var ds = dsBuoc(b), i = ds.indexOf(n), truoc = ds[i - 1];
-  var lui = truoc && n !== 6 ? '<button type="button" class="btn lui" data-act="buoc" data-v="' + truoc + '">‹ ' + TEN_BUOC[b.loai][truoc] + '</button>' : '';
-  var nut = '', ghi = '', x;
-  if (b.loai === 'doi_song' && n === 1) { x = nutNop(b); nut = x.nut; ghi = x.ghi; }
-  else if (n === 1) nut = '<button type="button" class="btn cta" data-act="buoc" data-v="' + ds[1] + '">' + (kieuHien(b) === 'ngan' ? 'Đã đọc → Đặt 1 câu hỏi' : 'Tôi đã đọc xong → Kể lại') + '</button>';
-  else if (n === 2) { var okK = co(b.ke_lai); nut = '<button type="button" class="btn cta" data-act="buoc" data-v="3"' + (okK ? '' : ' disabled') + '>Xong, mở truyện ra so</button>'; if (!okK) ghi = 'Kể vài câu là đủ.'; }
-  else if (n === 3) nut = '<button type="button" class="btn cta" data-act="buoc" data-v="4">Sang đặt câu hỏi ›</button>';
-  else if (n === 4) {
-    var hop = cauCua(b.id).filter(function (c) { return nz(c.cau).trim().length >= 3; }).length;
-    nut = '<button type="button" class="btn cta" data-act="buoc" data-v="5"' + (hop ? '' : ' disabled') + '>Sang trả lời ›</button>';
-    if (!hop) ghi = 'Viết ít nhất 1 câu hỏi, hoặc mở gợi ý và bấm "Dùng câu này".';
-  } else if (n === 5) { x = nutNop(b); nut = x.nut; ghi = x.ghi; }
-  else nut = '<button type="button" class="btn cta" data-act="veNay">Về Hôm nay</button>';
-  return '<div class="in">' + (ghi ? '<div class="thieu" role="status">' + ghi + '</div>' : '') + '<div class="nut">' + lui + nut + '</div><div class="luu" id="luu">' + (S.tam.luuLuc && n < 6 ? 'Đã lưu nháp ' + S.tam.luuLuc + ' ✓' : '') + '</div></div>';
+// --- giữ trạng thái mở/gập của các ô <details data-nho="…"> khi vẽ lại ---
+document.addEventListener('toggle', function (e) { var d = e.target; if (d && d.dataset && d.dataset.nho) (S.tam.mo = S.tam.mo || {})[d.dataset.nho] = d.open; }, true);
+function moSan(khoa, macDinh) { var m = S.tam.mo || {}; return (khoa in m ? m[khoa] : macDinh) ? ' open' : ''; }
+function henSau(fn) { var cu = S.tam.sauVe; S.tam.sauVe = cu ? function () { cu(); fn(); } : fn; }
+function veKhoi(loai) {
+  var f = loai === 'co_hoc' ? (S.man === 'bai' ? veKhoiCH : veKhoiCHHomNay) : veKhoiDS;
+  var el = ve('#khoi-' + loai, f()); if (!el) return;
+  el.querySelectorAll('textarea').forEach(gian);
+  if ($('#vung-tich')) ve('#vung-tich', veTich());
+  var fn = S.tam.sauVe; S.tam.sauVe = null; if (fn) fn();
 }
-ACT.buoc = function (el) { diBuoc(+el.dataset.v); };
-ACT.dongBai = function () { xaCho(); S.bai = null; S.tab = 'nay'; di('nay'); };
-ACT.doiKieuDangLam = function (el) { doiKieuBai(baiDangLam(), el.dataset.k); };
-function roO(b) { return coTheSua(b) ? '' : ' readonly'; }
+function denMuc(id) { var el = document.getElementById(id); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+ACT.denMuc = function (el) { denMuc(el.dataset.v); };
 
-// --- truyện: tải một lần, nhớ trên máy theo phiên kho ---
-var TRUYEN = {};
+// ============ 18b. TRUYỆN: TẢI SẴN CẢ KHO, TRÌNH BÀY DỄ ĐỌC ============
+// Cả kho (243 truyện) tải sẵn từ kho-truyen.json cạnh trang, bỏ Lời bàn trước khi lưu trên máy → mở là đọc được ngay.
+// Bản trên máy chủ (đã sửa chữ sai) vẫn được lấy ngầm và dùng trước khi có.
+var TRUYEN = {}, KHO_TINH = null;
 function khoaKho() { return cfg('PHIEN_KHO') + '|' + cfg('KHO_SUA'); }
-function layTruyen(so) {
+function khoTinh() { if (!KHO_TINH) KHO_TINH = LS.get('khoTinh', null); return KHO_TINH; }
+function napKhoTinh() {
+  if (window.__dangNapKho) return; window.__dangNapKho = true;
+  fetch('kho-truyen.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    window.__dangNapKho = false;
+    if (!d || !d.truyen || !d.truyen.length) return;
+    var cu = khoTinh(); if (cu && cu.phien === d.phien && Object.keys(cu.ds || {}).length === d.truyen.length) return;
+    var m = {}; d.truyen.forEach(function (t) { m[t.so] = { ten: t.ten, noi_dung: t.noi_dung, giai_nghia: t.giai_nghia || '', nguon: t.nguon || '', goi_y_hoi: t.goi_y_hoi || [] }; });
+    KHO_TINH = { phien: d.phien || '', ds: m }; LS.set('khoTinh', KHO_TINH);
+    dienTruyenCho();
+  }).catch(function () { window.__dangNapKho = false; });
+}
+function layTruyenNhanh(so) {
+  var k = khoaKho(), mem = TRUYEN[so]; if (mem && mem.k === k) return mem.t;
+  var luu = LS.get('tr:' + so, null); if (luu && luu.k === k) { TRUYEN[so] = luu; return luu.t; }
+  var kt = khoTinh(); return (kt && kt.ds && kt.ds[so]) || null;
+}
+function layTruyen(so) { // từ máy chủ (bản đã sửa chữ sai); nhớ trên máy theo phiên kho
   var k = khoaKho(), mem = TRUYEN[so];
   if (mem && mem.k === k) return Promise.resolve(mem.t);
   var luu = LS.get('tr:' + so, null);
@@ -1199,182 +1157,251 @@ function layTruyen(so) {
     return t;
   });
 }
-function veTruyenVao(sel, so, kieu) {
-  var el = $(sel); if (!el) return;
-  layTruyen(so).then(function (t) {
-    var el2 = $(sel); if (!el2) return;
-    var h = '<div class="ten-truyen">' + esc(t.ten) + '</div><div class="truyen" data-so="' + so + '">' + doanVan(t.noi_dung).map(function (p) { return '<p class="doan" data-phan="noi_dung">' + esc(p) + '</p>'; }).join('') + '</div>';
-    if (co(t.nguon)) h += '<div class="nguon">' + esc(t.nguon) + '</div>';
-    if (kieu === 'doc' && co(t.giai_nghia)) h += '<div class="gn"><span class="k">GIẢI NGHĨA</span><div class="truyen" data-so="' + so + '">' + doanVan(t.giai_nghia).map(function (p) { return '<p class="doan" data-phan="giai_nghia">' + esc(p) + '</p>'; }).join('') + '</div></div>';
-    el2.innerHTML = h;
-  }).catch(function (r) {
-    var el3 = $(sel); if (!el3) return;
-    el3.innerHTML = '<div class="peek">' + (r && r.error === 'khong_co_truyen' ? 'Chưa có truyện số ' + so + ' trong kho — nhờ Quản trị kiểm ☰ › Kho truyện.' : 'Chưa tải được truyện. ' + esc(chuLoi(r))) +
-      ' <button type="button" class="btn nho-btn" data-act="taiTruyenLai" data-sel="' + esc(sel) + '" data-so="' + so + '" data-k="' + kieu + '">Thử lại</button></div>';
+function lamNongTruyen(so) { if (so && !(TRUYEN[so] && TRUYEN[so].k === khoaKho()) && S.pw) layTruyen(so).then(dienTruyenCho, function () { }); }
+// Trình bày: lời thoại trong ngoặc kép thành dòng riêng (màu tím), đoạn dài chia khoảng 2 câu. Chữ của sách giữ nguyên.
+function chiaDoan(txt) {
+  var out = [];
+  doanVan(txt).forEach(function (p) {
+    var buf = '';
+    var day = function () { if (buf.trim()) out.push(['', buf.trim()]); buf = ''; };
+    p.split(/(["“][^"”]{2,}["”][.,!?;]?)/).forEach(function (x) {
+      if (!x || !x.trim()) return;
+      if (/^["“]/.test(x) && /["”][.,!?;]?$/.test(x)) { day(); out.push(['thoai', x.trim()]); return; }
+      x.replace(/([.!?…])\s+/g, '$1\u0001').split('\u0001').forEach(function (c) { if (!c.trim()) return; buf += (buf ? ' ' : '') + c.trim(); if (buf.length > 150) day(); });
+    });
+    day();
   });
+  return out;
 }
-ACT.taiTruyenLai = function (el) { ve(el.dataset.sel, '<p class="meta">Đang tải truyện…</p>'); veTruyenVao(el.dataset.sel, +el.dataset.so, el.dataset.k); };
-function soCuaBai(b) { return +b.truyen_so || truyenCuaNgay(b.ngay_truyen); }
-// S5 Đọc truyện
-function veDoc(b) {
-  var so = soCuaBai(b);
-  S.tam.sauVe = function () { veTruyenVao('#vung-truyen', so, 'doc'); };
-  return '<span class="meta">TRUYỆN ' + so + '/' + SO_TRUYEN + ' · ĐỌC CHẬM, ĐỂ Ý AI LÀM GÌ, NÓI GÌ</span><div id="vung-truyen" class="card"><p class="meta">Đang tải truyện…</p></div>' +
-    '<p class="hint">Thấy chữ sai? Bấm giữ đoạn đó để báo.</p>';
-}
-// S7a Kể lại (truyện ẩn: không có chữ truyện trên trang)
-function veKeLai(b) {
-  return '<h2>Kể lại bằng lời của bạn</h2><p class="goi-y">Truyện đã ẩn. Kể lại: ai, ở đâu, chuyện gì xảy ra, ai nói gì, kết cục ra sao.</p>' +
-    '<textarea class="lon" data-f="b:ke_lai" maxlength="5000" placeholder="Ngày xưa…"' + roO(b) + '>' + esc(b.ke_lai || '') + '</textarea>' +
-    '<p class="hint">Mẹo: bấm 🎤 trên bàn phím để đọc thay vì gõ.</p>';
-}
-// S7b Đối chiếu
-function veDoiChieu(b) {
-  S.tam.sauVe = function () { veTruyenVao('#vung-truyen', soCuaBai(b), 'so'); };
-  return '<div class="card"><span class="k">BẢN KỂ CỦA BẠN</span><div class="nho" style="color:var(--ink)">' + nl(b.ke_lai || '') + '</div></div>' +
-    '<div id="vung-truyen" class="card"><p class="meta">Đang tải truyện…</p></div>' +
-    '<label class="o">MÌNH SÓT GÌ? THÊM GÌ KHÔNG CÓ TRONG TRUYỆN?<textarea data-f="b:doi_chieu" maxlength="2000" placeholder="Sót: … · Thêm: …"' + roO(b) + '>' + esc(b.doi_chieu || '') + '</textarea></label>';
-}
-// S10 Kể chuyện đời sống + bài học (v2: một màn, không câu hỏi, không 3D)
-function veGhiChuyen(b) {
-  var ro = roO(b);
-  return '<h2>Kể một chuyện hôm nay</h2><p class="goi-y">Kể lại bằng lời của bạn: ai, ở đâu, chuyện gì xảy ra, mình đã thấy gì.</p>' +
-    '<textarea id="o-chuyen" class="lon" data-f="b:chuyen" maxlength="5000" placeholder="Sáng nay…" aria-label="Chuyện hôm nay"' + ro + '>' + esc(b.chuyen || '') + '</textarea>' +
-    (co(b.chuyen) ? '' : '<div class="card"><span class="k">BÍ CHUYỆN? THỬ MỘT GÓC</span><div class="chips">' + ['viec', 'vat', 'nguoi'].map(function (k) { return '<button type="button" class="chip" data-act="goiYChuyen" data-v="' + k + '">' + esc(F('goi_y_doi_song_' + k)) + '</button>'; }).join('') + '</div></div>') +
-    '<label class="o">BÀI HỌC CỦA BẠN<span class="goi-y" style="font-family:var(--serif);letter-spacing:0">' + esc(F('loi_dan_bai_hoc')) + '</span>' +
-    '<textarea class="vua" data-f="b:duc_ket" maxlength="500" placeholder="Chuyện này dạy mình…"' + ro + '>' + esc(b.duc_ket || '') + '</textarea></label>' +
-    '<p class="hint">Mẹo: bấm 🎤 trên bàn phím để đọc thay vì gõ.</p>';
-}
-// S6 Đặt câu hỏi cho chính mình (v2: không dạng, không hỏi ai; gợi ý theo truyện ẩn sẵn)
-function veCauHoi(b) {
-  var ngan = kieuHien(b) === 'ngan', h = '<h2>Đặt câu hỏi cho chính mình</h2><p class="goi-y">' + esc(F('loi_dan_hoi')) + '</p>';
-  h += '<div id="ds-cau">' + veDsCau(b) + '</div>';
-  if ((!ngan || !cauCua(b.id).length) && coTheSua(b)) h += '<button type="button" class="btn blk" data-act="themCau">+ Thêm câu hỏi</button>';
-  if (coTheSua(b)) {
-    S.tam.sauVe = function () { var d = $('#goi-y-hoi'); if (d) d.addEventListener('toggle', function () { if (d.open) veGoiYHoi(b); }); };
-    h += '<details id="goi-y-hoi" class="card"><summary>💡 Xem gợi ý câu hỏi (nếu muốn)</summary><div id="vung-goi-y"><p class="meta">Đang mở gợi ý…</p></div></details>';
-  }
-  h += '<details id="xem-7-dang" class="card"><summary>📘 Xem 7 dạng câu hỏi (khi bí)</summary><div class="kt-than">' + ve7Dang(b.loai === 'co_hoc') + '</div></details>';
-  h += '<details class="card" id="xem-truyen"><summary>Xem lại truyện</summary><div id="vung-truyen"><p class="meta">Đang tải truyện…</p></div></details>';
-  var sau = S.tam.sauVe;
-  S.tam.sauVe = function () { if (sau) sau(); var d = $('#xem-truyen'); if (d) d.addEventListener('toggle', function () { if (d.open) veTruyenVao('#vung-truyen', soCuaBai(b), 'so'); }, { once: true }); };
+function veChuTruyen(txt, phan) { return chiaDoan(txt).map(function (x) { return '<p class="doan' + (x[0] ? ' ' + x[0] : '') + '" data-phan="' + phan + '">' + esc(x[1]) + '</p>'; }).join(''); }
+function veTruyenHtml(so, t, kieu) {
+  var h = '<div class="ten-truyen">' + esc(t.ten) + '</div><div class="truyen chinh" data-so="' + so + '">' + veChuTruyen(t.noi_dung, 'noi_dung') + '</div>';
+  if (co(t.nguon)) h += '<div class="nguon">' + esc(t.nguon) + '</div>';
+  if (kieu === 'doc' && co(t.giai_nghia)) h += '<details class="gn" data-nho="gn-' + so + '"' + moSan('gn-' + so, false) + '><summary>Giải nghĩa từ khó</summary><div class="truyen" data-so="' + so + '">' + doanVan(t.giai_nghia).map(function (p) { return '<p class="doan" data-phan="giai_nghia">' + esc(p) + '</p>'; }).join('') + '</div></details>';
   return h;
 }
-function veGoiYHoi(b) {
-  var hien = function (ds, rieng) {
-    var da = cauCua(b.id).map(function (c) { return nz(c.cau).trim(); });
-    ve('#vung-goi-y', (rieng ? '' : '<p class="meta">Truyện này chưa có gợi ý riêng — đây là gợi ý chung.</p>') + ds.map(function (q, i) {
-      var dung = da.indexOf(nz(q).trim()) >= 0;
-      return '<div class="row" style="justify-content:space-between;flex-wrap:nowrap;border-top:1px solid var(--border-soft);padding-top:8px"><span style="font-size:17px;flex:1">' + esc(q) + '</span>' +
-        (dung ? '<span class="xong">✓ đã dùng</span>' : '<button type="button" class="btn nho-btn" data-act="dungGoiY" data-v="' + i + '" style="flex:none">Dùng câu này</button>') + '</div>';
-    }).join(''));
-    S.tam.goiY = ds;
-  };
-  var chung = function () { return [1, 2, 3, 4, 5, 6].map(function (i) { return F('goi_y_hoi_chung_' + i); }).filter(co); };
-  layTruyen(soCuaBai(b)).then(function (t) { var g = [].concat(t.goi_y_hoi || []).filter(co); hien(g.length ? g : chung(), !!g.length); }).catch(function () { hien(chung(), false); });
+function veTruyenTrang(so, kieu) { // có sẵn trên máy thì vẽ luôn; chưa có thì chỗ chờ, có là điền
+  var t = layTruyenNhanh(so);
+  if (t) return veTruyenHtml(so, t, kieu);
+  henSau(function () { napKhoTinh(); layTruyen(so).then(dienTruyenCho, function (r) { var el = document.querySelector('[data-cho-truyen="' + so + '"]'); if (el && !khoTinh()) el.innerHTML = '<div class="peek">Chưa tải được truyện. ' + esc(chuLoi(r)) + ' <button type="button" class="btn nho-btn" data-act="taiTruyenLai">Thử lại</button></div>'; }); });
+  return '<div data-cho-truyen="' + so + '" data-kieu="' + kieu + '"><p class="meta">Đang tải truyện…</p></div>';
 }
-ACT.dungGoiY = function (el) { var q = (S.tam.goiY || [])[+el.dataset.v]; if (q) themCauHoi(q); var b = baiDangLam(); if (b) veGoiYHoi(b); };
+function dienTruyenCho() { document.querySelectorAll('[data-cho-truyen]').forEach(function (el) { var so = +el.dataset.choTruyen, t = layTruyenNhanh(so); if (t) el.outerHTML = veTruyenHtml(so, t, el.dataset.kieu); }); }
+ACT.taiTruyenLai = function () { window.__dangNapKho = false; napKhoTinh(); document.querySelectorAll('[data-cho-truyen]').forEach(function (el) { el.innerHTML = '<p class="meta">Đang tải truyện…</p>'; layTruyen(+el.dataset.choTruyen).then(dienTruyenCho, function () { }); }); };
+function veTruyenVao(sel, so, kieu) { var el = $(sel); if (el) { el.innerHTML = veTruyenTrang(so, kieu); var fn = S.tam.sauVe; S.tam.sauVe = null; if (fn) fn(); } }
+
+// ============ 19. DANH SÁCH TÍCH ============
+function tichCH(b) {
+  var nop = !!b && b.trang_thai === 'da_nop', buoc = b ? +b.buoc_dang_lam || 1 : 0;
+  var cs = b ? cauCua(b.id).filter(function (c) { return co(c.cau); }) : [];
+  return [['Đọc truyện', nop || buoc >= 2, 'muc-ch'], ['Kể lại', nop || (buoc >= 3 && co(b.ke_lai)), 'muc-ch'],
+    ['Hỏi và trả lời' + (cs.length ? ' · ' + cs.length : ''), cs.length > 0 && cs.every(function (c) { return co(c.tra_loi); }), 'muc-ch-hoi'],
+    ['Bài học', !!b && co(b.duc_ket), 'muc-ch-bh'], ['Nộp', nop, 'nop-co_hoc']];
+}
+function tichDS(b) {
+  var nop = !!b && b.trang_thai === 'da_nop';
+  return [['Chuyện hôm nay', !!b && co(b.chuyen), 'muc-ds'], ['Bài học', !!b && co(b.duc_ket), 'muc-ds-bh'], ['Nộp', nop, 'nop-doi_song']];
+}
+function veTich() {
+  var ch = KHOI.co_hoc ? tichCH(baiKhoi('co_hoc')) : [], ds = tichDS(baiKhoi('doi_song')), tat = ch.concat(ds), xong = tat.filter(function (x) { return x[1]; }).length;
+  var cot = function (nhan, ds) { return '<div class="cot-tich"><span class="meta">' + nhan + '</span>' + ds.map(function (x) { return '<button type="button" class="dong-tich' + (x[1] ? ' on' : '') + '" data-act="denMuc" data-v="' + x[2] + '"><i aria-hidden="true">' + (x[1] ? '✓' : '') + '</i><span>' + esc(x[0]) + '</span><span class="sr">' + (x[1] ? 'đã xong' : 'chưa xong') + '</span></button>'; }).join('') + '</div>'; };
+  return '<div class="card tich"><span class="k"><span>VIỆC HÔM NAY</span><span>' + xong + '/' + tat.length + (xong === tat.length ? ' · xong cả ngày ✓' : ' · khoảng 15 phút') + '</span></span><div class="luoi-tich">' +
+    (ch.length ? cot('☀ CỔ HỌC', ch) : '') + cot('◐ ĐỜI SỐNG', ds) + '</div></div>';
+}
+
+// ============ 19b. KHỐI CỔ HỌC ============
+function veKhoiCHHomNay() {
+  var nay = hn(), so = truyenCuaNgay(nay), ten = tenTruyen(so) || (S.data && S.data.truyenHomNay && S.data.truyenHomNay.ten);
+  if (!cfg('NGAY_BAT_DAU') || !so) return '<div class="card"><span class="k">☀ CỔ HỌC</span><span>Chưa có lịch truyện.</span></div>';
+  if (!ten && !layTruyenNhanh(so)) {
+    var khoTrong = !((S.data && S.data.dsTruyen) || []).length;
+    return '<div class="card"><span class="k">☀ CỔ HỌC · TRUYỆN ' + so + '/' + SO_TRUYEN + '</span><span>' + (khoTrong ? 'Chưa có truyện — mở ☰ › Kho truyện › Nạp kho.' : 'Chưa có truyện số ' + so + ' trong kho — nhờ Quản trị kiểm ☰ › Kho truyện.') + '</span>' +
+      (laQt() ? '<button type="button" class="btn" data-act="moMan" data-v="kho">Mở Kho truyện</button>' : '') + '</div>';
+  }
+  return veKhoiCH();
+}
+function veKhoiCH() {
+  var k = KHOI.co_hoc, b = baiKhoi('co_hoc'), so = b ? soCuaBai(b) : truyenCuaNgay(hn());
+  var nop = !!b && b.trang_thai === 'da_nop', buoc = b ? +b.buoc_dang_lam || 1 : 1, sua = !b || coTheSua(b);
+  if (nop || (b && b.kieu === 'ngan')) buoc = Math.max(buoc, 3);
+  var h = '<span class="k nhan-khoi" id="muc-ch"><span>☀ CỔ HỌC · TRUYỆN ' + so + '/' + SO_TRUYEN + (b && b.lam_bu === '1' ? ' · LÀM BÙ ' + dm(b.ngay_truyen) : '') + '</span>' + (nop ? '<span class="xong">✓ đã nộp ' + gio(b.nop_luc) + '</span>' : '') + '</span>';
+  if (!sua && !nop) h += '<div class="dai vang">Bài ngày ' + dm(b.ngay) + ' đã qua 23:59 — chỉ đọc. Truyện này nằm trong Sổ bài › Chưa học, làm tiếp được như làm bù.</div>';
+  if (buoc <= 1) {
+    h += '<div class="card story">' + veTruyenTrang(so, 'doc') + '<p class="hint">Đọc chậm, để ý ai làm gì, nói gì. Thấy chữ sai? Bấm giữ đoạn đó để báo.</p>' +
+      '<button type="button" class="btn cta blk" data-act="daDoc">✓ Đã đọc xong → Kể lại</button></div>';
+    henSau(function () { lamNongTruyen(so); });
+    return h;
+  }
+  if (buoc === 2) {
+    return h + '<div class="card"><h2>Kể lại bằng lời của bạn</h2><p class="goi-y">Truyện đã ẩn. Kể lại: ai, ở đâu, chuyện gì xảy ra, ai nói gì, kết cục ra sao.</p>' +
+      '<textarea class="lon" data-f="k:co_hoc:ke_lai" maxlength="5000" placeholder="Ngày xưa…" aria-label="Kể lại"' + roO(b) + '>' + esc(b.ke_lai || '') + '</textarea>' +
+      '<p class="hint">Mẹo: bấm 🎤 trên bàn phím để đọc thay vì gõ.</p><div id="nut-kelai">' + veNutKeLai() + '</div></div>';
+  }
+  // đã kể lại: mở lại truyện để so, rồi hỏi – đáp – bài học
+  h += '<details class="card" data-nho="ch-kelai"' + moSan('ch-kelai', false) + '><summary>Bản kể lại của bạn</summary><textarea class="vua" data-f="k:co_hoc:ke_lai" maxlength="5000" aria-label="Bản kể lại"' + roO(b) + '>' + esc(b.ke_lai || '') + '</textarea></details>';
+  h += '<details class="card story" data-nho="ch-truyen"' + moSan('ch-truyen', !nop) + '><summary>Truyện · so với bản kể của bạn</summary>' + veTruyenTrang(so, 'so') + '</details>';
+  h += '<div class="card" id="muc-ch-hoi"><h2>Đặt câu hỏi và trả lời</h2><p class="goi-y">' + esc(F('loi_dan_hoi')) + ' Đặt câu nào, trả lời câu đó.</p><div id="ds-cau-co_hoc">' + veDsCau(b) + '</div>' +
+    (sua ? '<button type="button" class="btn blk" data-act="themCau" data-v="co_hoc">+ Thêm câu hỏi</button>' : '') +
+    (sua ? '<details data-nho="goi-y-hoi"' + moSan('goi-y-hoi', false) + '><summary>💡 Xem gợi ý câu hỏi (nếu muốn)</summary><div id="vung-goi-y">' + veGoiYHoi(b) + '</div></details>' : '') +
+    '<details id="xem-7-dang" data-nho="7-dang"' + moSan('7-dang', false) + '><summary>📘 Xem 7 dạng câu hỏi (khi bí)</summary><div class="kt-than">' + ve7Dang(true) + '</div></details></div>';
+  h += '<label class="o card" id="muc-ch-bh">BÀI HỌC TỪ TRUYỆN NÀY<span class="goi-y" style="font-family:var(--serif);letter-spacing:0">' + esc(F('loi_dan_bai_hoc')) + '</span>' +
+    '<textarea class="vua" data-f="k:co_hoc:duc_ket" maxlength="1000" placeholder="Truyện này dạy mình…" aria-label="Bài học từ truyện"' + roO(b) + '>' + esc(b.duc_ket || '') + '</textarea></label>';
+  h += '<div id="nop-co_hoc">' + veNutNop('co_hoc') + '</div>';
+  if (nop) {
+    h += '<div class="card"><span class="k">LỜI BÀN (sách, 1925)</span><div id="vung-loiban"><p class="meta">Đang mở Lời bàn…</p></div></div>';
+    var ban = dsBanDaNop(b.ngay_truyen);
+    if (ban.length) h += '<button type="button" class="dai tim" data-act="xemCungTruyen" data-v="' + esc(b.ngay_truyen) + '">✦ Xem bài của ' + esc(ban.map(tenTv).join(', ')) + ' cho truyện này ›</button>';
+    henSau(function () { taiLoiBan(b); });
+  }
+  return h;
+}
+function veNutKeLai() { var b = baiKhoi('co_hoc'), ok = !!b && co(b.ke_lai); return '<button type="button" class="btn cta blk" data-act="xongKeLai"' + (ok ? '' : ' disabled') + '>Xong, mở truyện ra so ›</button>' + (ok ? '' : '<p class="nho">Kể vài câu là đủ.</p>'); }
+ACT.daDoc = function () {
+  var b = damBaoBai('co_hoc'); if (!b || !coTheSua(b)) return;
+  b.buoc_dang_lam = '2'; choGhi('E3', b.id, 'buoc_dang_lam', '2'); xaCho();
+  veKhoi('co_hoc'); denMuc('muc-ch'); var o = document.querySelector('[data-f="k:co_hoc:ke_lai"]'); if (o) o.focus();
+};
+ACT.xongKeLai = function () {
+  var b = baiKhoi('co_hoc'); if (!b || !co(b.ke_lai) || !coTheSua(b)) return;
+  xaCho(); b.buoc_dang_lam = '3'; choGhi('E3', b.id, 'buoc_dang_lam', '3');
+  if (!cauCua(b.id).length) themCauHoi(b, '', true);
+  xaCho(); (S.tam.mo = S.tam.mo || {})['ch-truyen'] = true; veKhoi('co_hoc'); denMuc('muc-ch');
+};
+
+// ============ 19c. KHỐI ĐỜI SỐNG ============
+function veKhoiDS() {
+  var b = baiKhoi('doi_song'), nop = !!b && b.trang_thai === 'da_nop', sua = !b || coTheSua(b), cs = b ? cauCua(b.id) : [];
+  var h = '<span class="k nhan-khoi" id="muc-ds"><span>◐ ĐỜI SỐNG</span>' + (nop ? '<span class="xong">✓ đã nộp ' + gio(b.nop_luc) + '</span>' : '') + '</span>';
+  h += '<div class="card ds"><h2>Chuyện hôm nay</h2><p class="goi-y">Kể lại bằng lời của bạn: ai, ở đâu, chuyện gì xảy ra, mình đã thấy gì.</p>' +
+    '<textarea id="o-chuyen" class="lon" data-f="k:doi_song:chuyen" maxlength="5000" placeholder="Sáng nay…" aria-label="Chuyện hôm nay"' + roO(b) + '>' + esc((b && b.chuyen) || '') + '</textarea>' +
+    (b && co(b.chuyen) ? '' : '<div class="chips" aria-label="Bí chuyện? Thử một góc">' + ['viec', 'vat', 'nguoi'].map(function (k) { return '<button type="button" class="chip" data-act="goiYChuyen" data-v="' + k + '">' + esc(F('goi_y_doi_song_' + k)) + '</button>'; }).join('') + '</div>') +
+    '<label class="o" id="muc-ds-bh">BÀI HỌC TỪ CHUYỆN<span class="goi-y" style="font-family:var(--serif);letter-spacing:0">' + esc(F('loi_dan_bai_hoc')) + '</span>' +
+    '<textarea class="vua" data-f="k:doi_song:duc_ket" maxlength="500" placeholder="Chuyện này dạy mình…" aria-label="Bài học từ chuyện"' + roO(b) + '>' + esc((b && b.duc_ket) || '') + '</textarea></label>';
+  if (cs.length) h += '<span class="k">CÂU HỎI CHO CHUYỆN NÀY (TÙY CHỌN)</span><div id="ds-cau-doi_song">' + veDsCau(b) + '</div>' + (sua ? '<button type="button" class="btn blk" data-act="themCau" data-v="doi_song">+ Thêm câu hỏi</button>' : '');
+  else if (sua) h += '<button type="button" class="link" data-act="themCau" data-v="doi_song">+ Đặt câu hỏi cho chuyện này (tùy chọn)</button>';
+  h += '<div class="row"><span class="meta">AI ĐƯỢC XEM?</span><div class="toggle" role="group" aria-label="Chế độ xem"><button type="button" data-act="cheDoXem" data-v="rieng" class="' + (!b || b.che_do_xem !== 'chia_se' ? 'on' : '') + '" aria-pressed="' + (!b || b.che_do_xem !== 'chia_se') + '">🔒 Riêng</button><button type="button" data-act="cheDoXem" data-v="chia_se" class="' + (b && b.che_do_xem === 'chia_se' ? 'on' : '') + '" aria-pressed="' + !!(b && b.che_do_xem === 'chia_se') + '">✦ Chia sẻ</button></div></div>' +
+    '<span class="nho">' + (b && b.che_do_xem === 'chia_se' ? 'Cả nhóm xem được trong Cùng học.' : 'Riêng: chỉ bạn xem được, kể cả Quản trị cũng không thấy.') + '</span></div>';
+  h += '<div id="nop-doi_song">' + veNutNop('doi_song') + '</div>';
+  return h;
+}
+ACT.goiYChuyen = function (el) {
+  var o = $('#o-chuyen'); if (!o || o.readOnly) return;
+  if (!co(o.value)) { o.value = F('goi_y_doi_song_' + el.dataset.v) + ': '; O_NHAN.k('doi_song:chuyen', nz(o.value)); }
+  o.focus(); o.setSelectionRange(o.value.length, o.value.length);
+};
+ACT.cheDoXem = function (el) {
+  var b = el.dataset.id ? S.db.bai[el.dataset.id] : (S.man === 'xem' ? S.db.bai[S.tam.xemId] : damBaoBai('doi_song')); if (!b || b.loai !== 'doi_song') return;
+  b.che_do_xem = el.dataset.v; xepHang('E3', 'E3:' + b.id + ':xem', { id: b.id, che_do_xem: b.che_do_xem }); luuDb(); chayHang();
+  bao(b.che_do_xem === 'chia_se' ? 'Đã chia sẻ với cả nhóm.' : 'Đã để Riêng.');
+  if (S.man === 'nay') veKhoi('doi_song'); else veMan(true);
+};
+
+// ============ 19d. CÂU HỎI: ĐẶT CÂU NÀO, TRẢ LỜI CÂU ĐÓ ============
 function veDsCau(b) {
-  var cs = cauCua(b.id), sua = coTheSua(b), ngan = kieuHien(b) === 'ngan';
-  if (!cs.length) return '<div class="peek">Chưa có câu hỏi nào. Viết câu của bạn, hoặc mở gợi ý bên dưới.</div>';
+  var cs = b ? cauCua(b.id) : [], sua = !b || coTheSua(b), ro = roO(b);
+  if (!cs.length) return '<div class="peek">Chưa có câu hỏi nào. Bấm "+ Thêm câu hỏi", hoặc mở gợi ý bên dưới.</div>';
   return cs.map(function (c, i) {
-    return '<div class="card qcard" style="margin-bottom:12px"><span class="k"><span>CÂU ' + (i + 1) + '</span>' +
-      (sua && !(ngan && cs.length === 1) ? '<button type="button" class="link" data-act="xoaCau" data-v="' + esc(c.id) + '" aria-label="Xóa câu ' + (i + 1) + '">Xóa</button>' : '') + '</span>' +
-      '<textarea class="vua" data-f="c:' + c.id + ':cau" maxlength="500" placeholder="Viên gạch xấu của mình là gì?" aria-label="Câu hỏi ' + (i + 1) + '"' + roO(b) + '>' + esc(c.cau || '') + '</textarea></div>';
+    return '<div class="card qcard"><span class="k"><span>CÂU ' + (i + 1) + '</span>' + (sua ? '<button type="button" class="link" data-act="xoaCau" data-v="' + esc(c.id) + '" aria-label="Xóa câu ' + (i + 1) + '">Xóa</button>' : '') + '</span>' +
+      '<textarea class="vua" data-f="c:' + c.id + ':cau" maxlength="500" placeholder="Câu hỏi cho chính mình…" aria-label="Câu hỏi ' + (i + 1) + '"' + ro + '>' + esc(c.cau || '') + '</textarea>' +
+      '<span class="meta">TRẢ LỜI</span><textarea class="vua" data-f="c:' + c.id + ':tra_loi" maxlength="2000" placeholder="Trả lời thật lòng, bằng chuyện của chính mình…" aria-label="Trả lời câu ' + (i + 1) + '"' + ro + '>' + esc(c.tra_loi || '') + '</textarea></div>';
   }).join('');
 }
-function themCauHoi(chu) {
-  var b = baiDangLam(); if (!b || !coTheSua(b)) return null;
+function themCauHoi(b, chu, imLang) {
+  if (!b || !coTheSua(b)) return null;
   xaCho();
   var cs = cauCua(b.id);
   var c = { id: b.id + '-q' + maNgau(), bai_id: b.id, nguoi: S.nguoi, cau: chu || '', tra_loi: '', da_xoa: '0', thu_tu: String(cs.reduce(function (m, x) { return Math.max(m, +x.thu_tu || 0); }, 0) + 1), tao_luc: lucVN() };
   S.db.cau[c.id] = c;
   xepHang('E4', 'E4:' + c.id, { id: c.id, bai_id: b.id, cau: c.cau, thu_tu: c.thu_tu }); luuDb(); chayHang();
-  if (kieuHien(b) === 'ngan') veMan(true); else { ve('#ds-cau', veDsCau(b)); veNutBai(); }
+  if (!imLang) veKhoi(b.loai);
   return c;
 }
-ACT.themCau = function () { var c = themCauHoi(''); if (c) { var o = document.querySelector('[data-f="c:' + c.id + ':cau"]'); if (o) o.focus(); } };
-ACT.xoaCau = function (el) {
-  var c = S.db.cau[el.dataset.v], b = baiDangLam(); if (!c || !b || !coTheSua(b)) return;
-  if (b.trang_thai === 'da_nop' && cauCua(b.id).filter(function (x) { return x.id !== c.id && co(x.cau); }).length === 0) return baoNhe('Bài đã nộp cần giữ ít nhất 1 câu hỏi.');
-  xaCho(); c.da_xoa = '1'; xepHang('E4', 'E4:' + c.id, { id: c.id, da_xoa: '1' }); luuDb(); chayHang();
-  ve('#ds-cau', veDsCau(b)); veNutBai();
-  bao('Đã xóa câu hỏi.', function () { c.da_xoa = '0'; xepHang('E4', 'E4:' + c.id, { id: c.id, da_xoa: '0' }); luuDb(); chayHang(); var b2 = baiDangLam(); if (b2 && S.man === 'bai') { ve('#ds-cau', veDsCau(b2)); veNutBai(); } });
+ACT.themCau = function (el) {
+  var loai = el.dataset.v, b = damBaoBai(loai), c = themCauHoi(b, '');
+  if (c) { var o = document.querySelector('[data-f="c:' + c.id + ':cau"]'); if (o) { o.focus(); o.scrollIntoView({ block: 'center' }); } }
 };
-// S8 Trả lời từng câu
-function veTraLoi(b) {
-  var cs = cauCua(b.id).filter(function (c) { return co(c.cau); }), ro = roO(b);
-  if (!cs.length) return '<div class="peek">Chưa có câu hỏi. Quay lại bước Đặt câu hỏi nhé.</div>';
-  return '<h2>Trả lời từng câu</h2><p class="goi-y">' + esc(F('loi_dan_tra_loi')) + '</p>' + cs.map(function (c, i) {
-    return '<div class="card qcard"><span class="k">CÂU ' + (i + 1) + '</span><span style="font-size:18px;font-weight:600;line-height:1.4">' + esc(c.cau) + '</span>' +
-      '<textarea data-f="c:' + c.id + ':tra_loi" maxlength="2000" placeholder="Câu trả lời của bạn…" aria-label="Trả lời câu ' + (i + 1) + '"' + ro + '>' + esc(c.tra_loi || '') + '</textarea></div>';
-  }).join('') + '<p class="hint">Mẹo: bấm 🎤 trên bàn phím để đọc thay vì gõ.</p>';
+ACT.xoaCau = function (el) {
+  var c = S.db.cau[el.dataset.v], b = c && S.db.bai[c.bai_id]; if (!c || !b || !coTheSua(b)) return;
+  if (b.loai === 'co_hoc' && b.trang_thai === 'da_nop' && cauCua(b.id).filter(function (x) { return x.id !== c.id && co(x.cau); }).length === 0) return baoNhe('Bài đã nộp cần giữ ít nhất 1 câu hỏi.');
+  xaCho(); c.da_xoa = '1'; xepHang('E4', 'E4:' + c.id, { id: c.id, da_xoa: '1' }); luuDb(); chayHang();
+  veKhoi(b.loai);
+  bao('Đã xóa câu hỏi.', function () { c.da_xoa = '0'; xepHang('E4', 'E4:' + c.id, { id: c.id, da_xoa: '0' }); luuDb(); chayHang(); veKhoi(b.loai); });
+};
+function goiYChoBai(b) {
+  var t = layTruyenNhanh(b ? soCuaBai(b) : truyenCuaNgay(hn())), g = [].concat((t && t.goi_y_hoi) || []).filter(co);
+  if (g.length) return { ds: g, rieng: true };
+  return { ds: [1, 2, 3, 4, 5, 6].map(function (i) { return F('goi_y_hoi_chung_' + i); }).filter(co), rieng: false };
 }
-ACT.nopBai = function () {
-  var b = baiDangLam(); if (!b) return;
+function veGoiYHoi(b) {
+  var g = goiYChoBai(b), da = b ? cauCua(b.id).map(function (c) { return nz(c.cau).trim(); }) : [];
+  S.tam.goiY = g.ds;
+  return (g.rieng ? '' : '<p class="meta">Truyện này chưa có gợi ý riêng — đây là gợi ý chung.</p>') + g.ds.map(function (q, i) {
+    var dung = da.indexOf(nz(q).trim()) >= 0;
+    return '<div class="row goi-y-dong"><span style="font-size:17px;flex:1">' + esc(q) + '</span>' +
+      (dung ? '<span class="xong">✓ đã dùng</span>' : '<button type="button" class="btn nho-btn" data-act="dungGoiY" data-v="' + i + '" style="flex:none">Dùng câu này</button>') + '</div>';
+  }).join('');
+}
+ACT.dungGoiY = function (el) {
+  var q = (S.tam.goiY || [])[+el.dataset.v], b = damBaoBai('co_hoc'); if (!q || !b || !coTheSua(b)) return;
+  var trong = cauCua(b.id).filter(function (c) { return !co(c.cau); })[0];
+  if (trong) { trong.cau = q; trong.sua_luc = lucVN(); choGhi('E4', trong.id, 'cau', q); xaCho(); veKhoi('co_hoc'); }
+  else themCauHoi(b, q);
+  var o = document.querySelector('[data-f="c:' + (trong ? trong.id : (cauCua(b.id).slice(-1)[0] || {}).id) + ':tra_loi"]'); if (o) { o.focus(); o.scrollIntoView({ block: 'center' }); }
+};
+
+// ============ 19e. NỘP ============
+function veNutNop(loai) {
+  var b = baiKhoi(loai), ten = loai === 'co_hoc' ? 'Cổ học' : 'Đời sống';
+  if (!b) return '<button type="button" class="btn cta blk" disabled>Nộp bài ' + ten + '</button><div class="thieu">' + (loai === 'co_hoc' ? 'Bắt đầu bằng đọc truyện ở trên.' : 'Kể chuyện hôm nay ở trên.') + '</div>';
+  var t = thieuBai(b), sua = coTheSua(b);
+  if (b.trang_thai === 'da_nop') return '<div class="dai xanh">✓ Đã nộp bài ' + ten + ' lúc ' + gio(b.nop_luc) + (sua ? ' · sửa được đến 23:59' : '') + (treMang(b) ? ' · máy chủ nhận sau 12:00 hôm sau nên không tính ngày giữ' : '') + '</div>' + (t && sua ? '<div class="thieu">Bài đã nộp: ô bắt buộc không được để trống (' + esc(t.chu) + ').</div>' : '');
+  return '<button type="button" class="btn cta blk" data-act="nopKhoi" data-v="' + loai + '"' + (t || !sua ? ' disabled' : '') + '>Nộp bài ' + ten + '</button>' +
+    (t ? '<div class="thieu" role="status">Còn thiếu: ' + esc(t.chu) + ' <button type="button" data-act="denMuc" data-v="' + t.muc + '">Đi tới</button></div>' : '<div class="nho">' + (loai === 'co_hoc' ? 'Nộp xong, Lời bàn của truyện mở ngay bên dưới.' : 'Đủ cả hai bài là giữ nhịp hôm nay.') + '</div>');
+}
+ACT.nopKhoi = function (el) {
+  var loai = el.dataset.v, b = baiKhoi(loai); if (!b) return;
   xaCho();
   if (!coTheSua(b)) return baoNhe('Đã qua 23:59 nên bài ngày ' + dm(b.ngay) + ' không nộp được nữa.');
-  if (b._nangCap) { // bản ngắn đã nộp → bản đủ
-    var t2 = thieuBai(Object.assign({}, b, { kieu: 'du' })); if (t2) return baoNhe('Còn thiếu: ' + t2.chu);
-    b.kieu = 'du'; delete b._nangCap;
-    xepHang('E3', 'E3:' + b.id + ':kieu', { id: b.id, kieu: 'du' }); luuDb(); chayHang(); return diBuoc(6);
-  }
-  var t = thieuBai(b); if (t) return baoNhe('Còn thiếu: ' + t.chu);
-  var noiDung = { id: b.id }; ['ke_lai', 'doi_chieu', 'chuyen', 'duc_ket'].forEach(function (k) { if (b[k] != null) noiDung[k] = b[k]; });
+  var t = thieuBai(b); if (t) { denMuc(t.muc); return baoNhe('Còn thiếu: ' + t.chu); }
+  var noiDung = { id: b.id }; ['ke_lai', 'chuyen', 'duc_ket'].forEach(function (k) { if (b[k] != null) noiDung[k] = b[k]; });
   xepHang('E3', 'E3:' + b.id, noiDung);
   b.trang_thai = 'da_nop'; b.nop_luc = lucVN();
   xepHang('E3', 'E3:' + b.id + ':nop', { id: b.id, trang_thai: 'da_nop', kieu: b.kieu });
-  luuDb(); chayHang(); S.tam.loiBan = null;
-  diBuoc(6);
+  luuDb(); chayHang();
+  if (loai === 'co_hoc') (S.tam.mo = S.tam.mo || {})['ch-truyen'] = false;
+  veKhoi(loai);
+  if ($('#vung-dau')) ve('#vung-dau', veDauNay());
+  var ca = (!KHOI.co_hoc || (baiKhoi('co_hoc') || {}).trang_thai === 'da_nop') && (baiKhoi('doi_song') || {}).trang_thai === 'da_nop';
+  bao(ca ? 'Xong cả ngày — giữ nhịp hôm nay ✓' : 'Đã nộp bài ' + (loai === 'co_hoc' ? 'Cổ học.' : 'Đời sống.'));
+  if (loai === 'co_hoc') setTimeout(function () { denMuc('vung-loiban'); }, 60);
 };
-// S9 / S11 Xong bài
-function veXong(b) {
-  var laCh = b.loai === 'co_hoc', h = '';
-  h += '<h1>✓ Đã nộp bài ' + (laCh ? 'Cổ học' : 'Đời sống') + '</h1><div class="chip-dong"><span>' + (b.nop_luc ? 'lúc ' + gio(b.nop_luc) + ' ' + dm(b.ngay) : '') + (laCh && b.kieu === 'ngan' ? ' · bản ngắn' : '') + (b.lam_bu === '1' ? ' · làm bù' : '') + '</span><span id="tt-ghi">' + chuTrangThaiGhi() + '</span></div>';
-  if (treMang(b)) h += '<div class="dai">Bài được máy chủ nhận sau 12:00 hôm sau nên đã lưu nhưng không tính ngày giữ.</div>';
-  if (laCh) {
-    var cs = cauCua(b.id).filter(function (c) { return co(c.cau); });
-    h += '<div class="card"><span class="k">CÂU HỎI VÀ TRẢ LỜI CỦA BẠN</span>' + cs.map(function (c) { return '<div class="qline"><span class="tx">' + esc(c.cau) + '</span><span class="tl">↳ ' + nl(c.tra_loi) + '</span></div>'; }).join('') + '</div>';
-    h += '<div class="card"><span class="k">LỜI BÀN (sách, 1925)</span><div id="vung-loiban"><p class="meta">Đang mở Lời bàn…</p></div></div>';
-    S.tam.sauVe = taiLoiBan;
-  } else {
-    h += '<div class="card"><span class="k">CHUYỆN HÔM NAY</span><div style="font-size:17px">' + nl(b.chuyen) + '</div></div>';
-    h += '<div class="card act"><span class="k">BÀI HỌC CỦA BẠN</span><span class="q">' + nl(b.duc_ket) + '</span></div>';
-    h += '<div class="card"><span class="k">AI ĐƯỢC XEM BÀI NÀY?</span><div class="toggle" role="group" aria-label="Chế độ xem"><button type="button" data-act="cheDoXem" data-v="rieng" class="' + (b.che_do_xem !== 'chia_se' ? 'on' : '') + '" aria-pressed="' + (b.che_do_xem !== 'chia_se') + '">🔒 Riêng</button><button type="button" data-act="cheDoXem" data-v="chia_se" class="' + (b.che_do_xem === 'chia_se' ? 'on' : '') + '" aria-pressed="' + (b.che_do_xem === 'chia_se') + '">✦ Chia sẻ</button></div>' +
-      '<span class="nho">' + (b.che_do_xem === 'chia_se' ? 'Cả nhóm xem được trong Cùng học.' : 'Chỉ bạn xem được, kể cả Quản trị cũng không thấy.') + ' Đổi lúc nào cũng được.</span></div>';
-  }
-  var ban = laCh ? dsBanDaNop(b.ngay_truyen) : [];
-  if (ban.length) h += '<button type="button" class="dai tim" data-act="xemCungTruyen" data-v="' + esc(b.ngay_truyen) + '">✦ Xem bài của ' + esc(ban.map(tenTv).join(', ')) + ' cho truyện này ›</button>';
-  if (coTheSua(b)) h += '<div class="row">' + (laCh && b.kieu === 'ngan' ? '<button type="button" class="btn" data-act="lamBanDu" data-v="' + esc(b.id) + '">Làm thêm thành bản đủ</button>' : '') +
-    '<button type="button" class="link" data-act="buoc" data-v="' + (laCh ? (b.kieu !== 'ngan' ? 2 : 4) : 1) + '">Sửa bài (đến 23:59)</button></div>';
-  return h;
-}
 function dsBanDaNop(ngayTruyen) { var s = {}; ((S.data && S.data.metaKhac) || []).forEach(function (m) { if (m.loai === 'co_hoc' && m.trang_thai === 'da_nop' && m.ngay_truyen === ngayTruyen) s[m.nguoi] = 1; }); return Object.keys(s); }
-ACT.goiYChuyen = function (el) {
-  var o = $('#o-chuyen'), b = baiDangLam(); if (!o || !b || !coTheSua(b)) return;
-  if (!co(o.value)) { o.value = F('goi_y_doi_song_' + el.dataset.v) + ': '; O_NHAN.b('chuyen', nz(o.value)); }
-  o.focus(); o.setSelectionRange(o.value.length, o.value.length);
-};
-ACT.cheDoXem = function (el) {
-  var b = baiDangLam() || S.db.bai[S.tam.xemId]; if (!b || b.loai !== 'doi_song') return;
-  b.che_do_xem = el.dataset.v; xepHang('E3', 'E3:' + b.id + ':xem', { id: b.id, che_do_xem: b.che_do_xem }); luuDb(); chayHang();
-  bao(b.che_do_xem === 'chia_se' ? 'Đã chia sẻ với cả nhóm.' : 'Đã để Riêng.'); veMan(true);
-};
 ACT.xemCungTruyen = function (el) { S.tam.cungLoc = el.dataset.v; S.tab = 'cung'; di('cung'); };
-function taiLoiBan() {
-  var b = baiDangLam(); if (!b || b.loai !== 'co_hoc') return;
+function taiLoiBan(b) {
+  b = b || baiKhoi('co_hoc'); if (!b || b.loai !== 'co_hoc' || b.trang_thai !== 'da_nop') return;
   var so = soCuaBai(b), luu = LS.get('lb:' + so, null), k = khoaKho();
-  var hien = function (v) { ve('#vung-loiban', co(v) ? '<div class="trich lb">' + nl(v) + '</div><p class="nho">Đặt đúc kết của bạn cạnh lời bàn: giống ở đâu, khác ở đâu?</p>' : '<p class="nho">Truyện này sách không có lời bàn.</p>'); };
-  if (luu && luu.k === k) return hien(luu.v);
-  if (conTrongHang('E3:' + b.id)) { S.tam.choLoiBan = true; return ve('#vung-loiban', '<p class="meta">Đang gửi bài lên máy chủ… Lời bàn mở ngay khi máy chủ nhận bài.</p>'); }
-  S.tam.choLoiBan = false;
+  var hien = function (v) { ve('#vung-loiban', co(v) ? '<div class="trich lb">' + nl(v) + '</div><p class="nho">Đặt bài học của bạn cạnh lời bàn: giống ở đâu, khác ở đâu?</p>' : '<p class="nho">Truyện này sách không có lời bàn.</p>'); };
+  if (luu && luu.k === k) { S.tam.choLoiBan = null; return hien(luu.v); }
+  if (conTrongHang('E3:' + b.id)) { S.tam.choLoiBan = b.id; return ve('#vung-loiban', '<p class="meta">Đang gửi bài lên máy chủ… Lời bàn mở ngay khi máy chủ nhận bài.</p>'); }
+  S.tam.choLoiBan = null;
   goi({ action: 'truyen', so: so }, HET_GIO.lenh).then(function (r) {
     if (!r || !r.ok) return ve('#vung-loiban', '<p class="nho">Chưa mở được Lời bàn. ' + esc(chuLoi(r)) + '</p><button type="button" class="btn nho-btn" data-act="taiLoiBanLai">Thử lại</button>');
-    if (!r.moLoiBan) { S.tam.choLoiBan = true; return ve('#vung-loiban', '<p class="meta">Máy chủ chưa nhận bài nộp. Lời bàn mở ngay khi bài lên tới máy chủ.</p><button type="button" class="btn nho-btn" data-act="taiLoiBanLai">Thử lại</button>'); }
+    if (!r.moLoiBan) { S.tam.choLoiBan = b.id; return ve('#vung-loiban', '<p class="meta">Máy chủ chưa nhận bài nộp. Lời bàn mở ngay khi bài lên tới máy chủ.</p><button type="button" class="btn nho-btn" data-act="taiLoiBanLai">Thử lại</button>'); }
     LS.set('lb:' + so, { k: k, v: r.truyen.loi_ban || '' }); hien(r.truyen.loi_ban || '');
   });
 }
 ACT.taiLoiBanLai = function () { ve('#vung-loiban', '<p class="meta">Đang mở Lời bàn…</p>'); taiLoiBan(); };
+
+// ============ 19f. MÀN LÀM BÙ (một trang, chỉ khối Cổ học) ============
+MAN.bai = function () {
+  var b = S.bai && S.db.bai[S.bai.id]; if (!b) { S.man = 'nay'; return MAN.nay(); }
+  KHOI.co_hoc = { id: b.id }; KHOI.doi_song = null;
+  var so = soCuaBai(b);
+  henSau(function () { if (!window.__khoTinhGoi) { window.__khoTinhGoi = 1; napKhoTinh(); } });
+  return '<div class="shell"><div class="rbar"><button type="button" class="ib" data-act="dongBai" aria-label="Về Sổ bài">✕</button><span class="t">' + (b.lam_bu === '1' ? 'Làm bù · ' : '') + 'Truyện ' + so + ' · ' + esc(tenTruyen(so)) + '</span></div>' +
+    '<div class="chip-dong" id="tt-ghi">' + chuTrangThaiGhi() + '</div><div id="khoi-co_hoc" class="khoi">' + veKhoiCH() + '</div></div>';
+};
+ACT.dongBai = function () { xaCho(); S.bai = null; S.tab = 'so'; di('so'); };
 
 // ============ 20. BÁO CHỮ SAI (bấm giữ ≥ 0,65 giây một đoạn truyện; R16) ============
 var GIU = { hen: null, el: null, xong: false };
@@ -1412,7 +1439,7 @@ MAN.cung = function () {
   var d = S.data || {}, meta = d.metaKhac || [], loc = S.tam.cungLoc || '', nay = hn(), tu30 = cong(nay, -30);
   var baiKhac = {}; (d.baiKhac || []).forEach(function (b) { baiKhac[b.id] = b; });
   var h = '<div class="shell"><div class="top"><span class="t">CÙNG HỌC</span><button type="button" class="btn nho-btn" data-act="moSaoCua">⭐ của tôi' + (saoMoi() ? ' · ' + saoMoi() + ' mới' : '') + '</button></div>';
-  h += '<p class="goi-y">Bài Cổ học của nhau mở khi bạn đã nộp cùng truyện. Bài Đời sống chỉ hiện khi người viết chọn Chia sẻ. Thả ⭐ cho câu hỏi hay, góp ý một dòng.</p>';
+  h += '<p class="goi-y">Bài Cổ học của nhau mở ngay khi người viết nộp. Bài Đời sống chỉ hiện khi người viết chọn Chia sẻ. Thả ⭐ cho câu hỏi hay, góp ý một dòng.</p>';
   if (loc) h += '<div class="row"><span class="chip-tt xanh">Truyện ngày ' + dm(loc) + '</span><button type="button" class="link" data-act="boLocCung">Xem tất cả</button></div>';
   // gom theo ngày: Cổ học theo ngay_truyen, Đời sống theo ngày làm
   var ngay = {};
@@ -1487,7 +1514,7 @@ ACT.guiGopY = function (el) {
   bao(v ? 'Đã gửi góp ý.' : 'Đã xóa góp ý.');
 };
 ACT.boLocCung = function () { S.tam.cungLoc = ''; veMan(); };
-ACT.lamTruyenNgay = function (el) { var d = el.dataset.v; if (d === hn()) moBaiHomNay('co_hoc'); else { var c = dsChuaHoc().filter(function (x) { return x.ngay_truyen === d; })[0]; moLamBu(d, c && c.dangDo); } };
+ACT.lamTruyenNgay = function (el) { var d = el.dataset.v; if (d === hn()) { S.tab = 'nay'; di('nay'); setTimeout(function () { denMuc('muc-ch'); }, 50); } else { var c = dsChuaHoc().filter(function (x) { return x.ngay_truyen === d; })[0]; moLamBu(d, c && c.dangDo); } };
 
 // ============ 22. S26 ⭐ CỦA TÔI (ST29) ============
 MAN.saocua = function () {
@@ -1681,7 +1708,7 @@ ACT.soChuaHocDu = function () { S.tam.soChuaHocDu = true; veMan(true); };
 ACT.lamBu = function (el) { moLamBu(el.dataset.v, el.dataset.d); };
 ACT.moBaiCu = function (el) {
   var b = S.db.bai[el.dataset.v]; if (!b) return;
-  if (coTheSua(b)) { S.bai = { id: b.id }; S.tam.loiBan = null; S.tam.buocXem = b.trang_thai === 'da_nop' ? 6 : (+b.buoc_dang_lam || 1); return di('bai'); }
+  if (coTheSua(b)) { if (b.loai === 'co_hoc' && b.lam_bu === '1') { S.bai = { id: b.id }; return di('bai'); } S.tab = 'nay'; di('nay'); return setTimeout(function () { denMuc(b.loai === 'co_hoc' ? 'muc-ch' : 'muc-ds'); }, 50); }
   S.tam.xemId = b.id; di('xem');
 };
 
@@ -1776,7 +1803,7 @@ MAN.phieu = function () {
   var ten = esc(tenTv(pt.nguoiNhan)), muon = hn() > pt.tuan;
   h += '<h1>Ghi nhận cho ' + ten + '</h1><span class="meta">Phiếu thứ Năm ' + dmy(pt.tuan) + (muon ? ' · gửi muộn vẫn được, phiếu ghi "muộn"' : '') + '</span>';
   if (daGui) h += '<div class="dai xanh">✓ Đã gửi lúc ' + gio(daGui.gui_luc) + ' ' + dm((daGui.gui_luc || '').slice(0, 10)) + (daGui.muon === '1' ? ' (muộn) — sửa được đến trước thứ Năm ' + dm(cong(pt.tuan, 7)) : ' — sửa được đến 23:59 thứ Năm') + '</div>';
-  h += '<details class="card" open id="khung-tuan"><summary>📖 Tuần của ' + ten + ' (' + dm(cong(pt.tuan, -7)) + ' – ' + dm(cong(pt.tuan, -1)) + ')</summary><div id="vung-khung"><p class="meta">Đang tải tuần của ' + ten + '…</p></div></details>';
+  h += '<details class="card" open id="khung-tuan"><summary>📖 Tuần của ' + ten + ' (' + dm(cong(pt.tuan, -7)) + ' – ' + dm(cong(pt.tuan, -1)) + ')</summary><div id="vung-khung">' + (function () { var c = S.tam.khung && S.tam.khung.tuan === pt.tuan ? S.tam.khung.d : LS.get('khung:' + S.nguoi + ':' + pt.tuan, null); return c ? veKhungTuan(c) : '<p class="meta">Đang tải tuần của ' + ten + '…</p>'; })() + '</div></details>';
   S.tam.sauVe = function () { taiKhungTuan(pt.tuan); };
   var suaDuoc = !daGui || (daGui.muon === '1' ? soNgay(pt.tuan, hn()) < 7 : hn() === pt.tuan);
   ['c1', 'c2', 'c3'].forEach(function (k) {
@@ -1807,31 +1834,48 @@ ACT.guiPhieu = function () {
   S.tam.taiSauHang = true;
   bao(cu ? 'Đã lưu phiếu.' : 'Đã gửi ghi nhận cho ' + tenTv(pt.nguoiNhan) + ' 🙏'); di('cacphieu');
 };
-function taiKhungTuan(tuan) {
-  var cache = S.tam.khung && S.tam.khung.tuan === tuan && Date.now() - S.tam.khung.luc < 120000 ? S.tam.khung.d : null;
-  var hien = function (d) {
-    if (!d.bai.length) return ve('#vung-khung', '<p class="nho">Tuần này chưa có bài. Vẫn viết được ghi nhận — có thể về việc giữ nhịp, hoặc điều bạn mong đồng đội thử.</p>');
-    var soCau = d.bai.reduce(function (n, b) { return n + (b.cauHoi || []).length; }, 0);
-    var h = '<p class="meta">Ngày giữ: ' + d.ngayGiu + '/7 · Câu hỏi đã đặt: ' + soCau + '</p>';
-    d.bai.forEach(function (b) {
-      var laCh = b.loai === 'co_hoc';
-      h += '<div style="border-top:1px solid var(--border-soft);padding-top:8px;margin-top:8px"><span class="k"><span>' + (laCh ? '☀ TRUYỆN ' + b.truyen_so + ' · ' + esc(tenTruyen(b.truyen_so)) : '◐ ĐỜI SỐNG') + '</span><span>' + THU_NGAN[thu(b.ngay)] + ' ' + dm(b.ngay) + (b.kieu === 'ngan' ? ' · ngắn' : '') + '</span></span>';
-      if (!b.xem) { h += '<p class="nho">Mở sau khi bạn nộp truyện này.</p></div>'; return; }
-      if (laCh && co(b.ke_lai)) h += '<p class="nho" style="color:var(--ink)"><b class="meta">BẢN KỂ LẠI · </b>' + nl(b.ke_lai) + '</p>';
-      if (!laCh && co(b.chuyen)) h += '<p class="nho" style="color:var(--ink)"><b class="meta">CHUYỆN · </b>' + nl(b.chuyen) + '</p>';
-      (b.cauHoi || []).forEach(function (c) { h += '<p class="nho">' + (c.sao ? '<span class="tag">⭐ ' + c.sao + '</span><br>' : '') + '<span style="color:var(--ink)">' + esc(c.cau) + '</span>' + (co(c.tra_loi) ? '<br>↳ ' + nl(c.tra_loi) : '') + '</p>'; });
-      if (co(b.duc_ket)) h += '<p class="nho" style="color:var(--ink)"><b class="meta">' + (b.loai === 'doi_song' ? 'BÀI HỌC' : 'ĐÚC KẾT') + ' · </b>' + nl(b.duc_ket) + '</p>';
-      h += '</div>';
+// v3: bảng tra soát tuần của người được ghi nhận — ngày, truyện (mở xem chữ), bản kể lại, từng câu hỏi + trả lời, bài học.
+// Tải ngầm sẵn khi mở app (taiKhungNgam) và nhớ trên máy, nên mở phiếu là thấy ngay.
+function veKhungTuan(d) {
+  if (!d.bai.length) return '<p class="nho">Tuần này ' + esc(d.ten || '') + ' chưa có bài. Vẫn viết được ghi nhận — có thể về việc giữ nhịp, hoặc điều bạn mong đồng đội thử.</p>';
+  var ch = d.bai.filter(function (b) { return b.loai === 'co_hoc'; }), soCau = d.bai.reduce(function (n, b) { return n + (b.cauHoi || []).length; }, 0);
+  var h = '<div class="luoi3"><div><span class="so-lon">' + d.ngayGiu + '/7</span><span class="meta">ngày giữ</span></div><div><span class="so-lon">' + ch.length + '</span><span class="meta">truyện đã học</span></div><div><span class="so-lon">' + soCau + '</span><span class="meta">câu hỏi đã đặt</span></div></div>';
+  h += '<table class="bang-tuan"><thead><tr><th>Ngày</th><th>Bài</th><th>Câu hỏi</th></tr></thead><tbody>' + d.bai.map(function (b) {
+    return '<tr><td>' + THU_NGAN[thu(b.ngay)] + ' ' + dm(b.ngay) + '</td><td>' + (b.loai === 'co_hoc' ? '☀ Truyện ' + esc(b.truyen_so) + ' · ' + esc(tenTruyen(b.truyen_so)) + (b.lam_bu === '1' ? ' (bù)' : '') : '◐ Đời sống') + '</td><td>' + (b.cauHoi || []).length + '</td></tr>';
+  }).join('') + '</tbody></table>';
+  d.bai.forEach(function (b) {
+    var laCh = b.loai === 'co_hoc', so = +b.truyen_so;
+    h += '<div class="bai-tuan"><span class="k"><span>' + THU_NGAN[thu(b.ngay)] + ' ' + dm(b.ngay) + ' · ' + (laCh ? '☀ TRUYỆN ' + so + ' · ' + esc(tenTruyen(so)) : '◐ ĐỜI SỐNG') + '</span></span>';
+    if (!b.xem) { h += '<p class="nho">Bài này chưa mở cho bạn.</p></div>'; return; }
+    if (laCh) {
+      var t = layTruyenNhanh(so);
+      h += '<details data-nho="kt-tr-' + b.id + '"' + moSan('kt-tr-' + b.id, false) + '><summary>Xem chữ truyện</summary>' + (t ? veTruyenHtml(so, t, 'so') : '<p class="nho">Chưa có chữ truyện trên máy — mở lại sau ít giây.</p>') + '</details>';
+      if (co(b.ke_lai)) h += '<details data-nho="kt-kl-' + b.id + '"' + moSan('kt-kl-' + b.id, false) + '><summary>Bản kể lại của ' + esc(d.ten || '') + '</summary><div class="nho" style="color:var(--ink)">' + nl(b.ke_lai) + '</div></details>';
+    } else if (co(b.chuyen)) h += '<div class="o-tuan"><b class="meta">CHUYỆN</b><div>' + nl(b.chuyen) + '</div></div>';
+    (b.cauHoi || []).forEach(function (c, i) {
+      h += '<div class="o-tuan"><b class="meta">CÂU ' + (i + 1) + (c.sao ? ' · ⭐ ' + c.sao : '') + '</b><div>' + esc(c.cau) + '</div>' + (co(c.tra_loi) ? '<div class="nho">↳ ' + nl(c.tra_loi) + '</div>' : '') + '</div>';
     });
-    ve('#vung-khung', h);
-  };
-  if (cache) return hien(cache);
+    if (co(b.duc_ket)) h += '<div class="o-tuan bh"><b class="meta">' + (co(b.quan_sat) || co(b.phan_tich) ? 'ĐÚC KẾT' : laCh ? 'BÀI HỌC TỪ TRUYỆN' : 'BÀI HỌC TỪ CHUYỆN') + '</b><div>' + nl(b.duc_ket) + '</div></div>';
+    h += '</div>';
+  });
+  return h;
+}
+function taiKhungNgam(tuan, xong) {
   goi({ action: 'tuan_dong_doi', tuan: tuan }, HET_GIO.lenh).then(function (r) {
-    if (!r || !r.ok) return ve('#vung-khung', '<p class="nho">' + (r && r.error === 'khong_co_phieu' ? 'Tuần này không có phiếu.' : 'Chưa tải được. ' + esc(chuLoi(r))) + '</p><button type="button" class="btn nho-btn" data-act="taiKhungLai" data-v="' + tuan + '">Thử lại</button>');
-    S.tam.khung = { tuan: tuan, luc: Date.now(), d: r }; hien(r);
+    if (r && r.ok) { S.tam.khung = { tuan: tuan, luc: Date.now(), d: r }; LS.set('khung:' + S.nguoi + ':' + tuan, r); if ($('#vung-khung') && !dangGo()) ve('#vung-khung', veKhungTuan(r)); }
+    if (xong) xong(r);
   });
 }
-ACT.taiKhungLai = function (el) { S.tam.khung = null; ve('#vung-khung', '<p class="meta">Đang tải…</p>'); taiKhungTuan(el.dataset.v); };
+function taiKhungTuan(tuan) {
+  var mem = S.tam.khung && S.tam.khung.tuan === tuan ? S.tam.khung : null, luu = mem ? mem.d : LS.get('khung:' + S.nguoi + ':' + tuan, null);
+  if (luu) ve('#vung-khung', veKhungTuan(luu));
+  if (mem && Date.now() - mem.luc < 120000) return;
+  taiKhungNgam(tuan, function (r) {
+    if (r && r.ok) return;
+    if (!luu) ve('#vung-khung', '<p class="nho">' + (r && r.error === 'khong_co_phieu' ? 'Tuần này không có phiếu.' : 'Chưa tải được. ' + esc(chuLoi(r))) + '</p><button type="button" class="btn nho-btn" data-act="taiKhungLai" data-v="' + tuan + '">Thử lại</button>');
+  });
+}
+ACT.taiKhungLai = function (el) { S.tam.khung = null; LS.del('khung:' + S.nguoi + ':' + el.dataset.v); ve('#vung-khung', '<p class="meta">Đang tải…</p>'); taiKhungTuan(el.dataset.v); };
 
 // ============ 27. S28 CÁC PHIẾU GHI NHẬN (ST32; cả nhóm đọc được — ww2) ============
 MAN.cacphieu = function () {
